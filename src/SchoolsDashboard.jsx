@@ -1,26 +1,15 @@
 import SchoolCard from './SchoolCard';
 import Dropdown from './Dropdown';
 import { useState, useEffect } from 'react';
-import { CITIES, TOTAL_STUDENTS } from './utils';
 import SelectedSchool from './SelectedSchool';
+import PageHeader from './PageHeader';
+
+import { CITIES, TOTAL_STUDENTS } from './utils';
 
 const URL_SCHOOLS = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
 const LIMIT = 5;
 
-// const URL_FILTER =
-//   'https://data.cityofnewyork.us/resource/s3k6-pzi2.json?school_name=Clinton School Writers & Artists, M.S. 260';
-
-const schoolName = 'Clinton School W';
-const encodedSchoolName = encodeURIComponent(schoolName);
-const URL_FILTER = `https://data.cityofnewyork.us/resource/s3k6-pzi2.json?school_name=${encodedSchoolName}&$limit=1`;
-
-const BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
-const userInput = 'Clin'; // This would be dynamic based on user input
-const encodedInput = encodeURIComponent(`'${userInput}%'`);
-const query = `?school_name like ${encodedInput}`;
-
-const fetchURL = BASE_URL + query;
 export default function SchoolsDashboard() {
   const [schoolsCache, setSchoolsCache] = useState({});
   const [currentSchools, setCurrentSchools] = useState([]);
@@ -39,9 +28,6 @@ export default function SchoolsDashboard() {
 
         try {
           const response = await fetch(schoolsUrl);
-          // const testResponse = await fetch(fetchURL);
-          // const testData = await testResponse.json();
-          // console.log({ testData });
           const data = await response.json();
           const schoolsWithScores = await Promise.all(
             data.map(async school => {
@@ -68,8 +54,12 @@ export default function SchoolsDashboard() {
     fetchSchoolsAndScores();
   }, [offset]);
 
-  const handleSelectedSchool = index => {
-    setSelectedSchool([currentSchools[index]]);
+  const handleSelectedSchool = (index, selectedSchool) => {
+    if (index === null) {
+      setSelectedSchool([selectedSchool]);
+    } else {
+      setSelectedSchool([currentSchools[index]]);
+    }
   };
 
   const handlePrevClick = () => {
@@ -82,6 +72,7 @@ export default function SchoolsDashboard() {
 
   return (
     <div>
+      <PageHeader selectSchool={handleSelectedSchool} />
       <div className="dropdown-container">
         <Dropdown buttonValue="Cities *" filterValue={CITIES} />
         <Dropdown buttonValue="Students *" filterValue={TOTAL_STUDENTS} />
@@ -96,7 +87,7 @@ export default function SchoolsDashboard() {
             <SchoolCard
               key={school.dbn}
               {...school}
-              handleClick={() => handleSelectedSchool(index)}
+              handleClick={() => handleSelectedSchool(index, false)}
             />
           ))}
         </div>

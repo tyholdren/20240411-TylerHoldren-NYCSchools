@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function PageHeader() {
+export default function PageHeader({ selectSchool }) {
   const [searchInput, setSearchInput] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
@@ -44,8 +44,24 @@ export default function PageHeader() {
     setSearchInput(event.target.value);
   };
 
+  const getFromLoadedResults = event => {
+    const selectedResult = event.target.textContent.toLowerCase();
+    const selectedSchool = searchResults.filter(
+      result => result.school_name.toLowerCase() === selectedResult
+    );
+
+    return selectedSchool;
+  };
+
   return (
-    <div>
+    <div
+      onClick={event => {
+        if (event.target.tagName === 'BUTTON') {
+          const selectedSchool = getFromLoadedResults(event);
+          selectSchool(null, ...selectedSchool);
+        }
+      }}
+    >
       <label htmlFor="school-search">
         Find the school that best matches your needs
       </label>
