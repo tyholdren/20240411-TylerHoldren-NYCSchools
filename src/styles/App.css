@@ -2,68 +2,96 @@
   text-align: center;
 }
 
-.school-container {
-  border: 1px solid black;
-  padding: 10px;
+.school-card {
+  padding: 12px;
   margin: 15px;
+  height: 55px;
   display: flex;
   justify-content: space-between;
+  background-color: #f5f5f5;
+  align-items: center;
+  border-radius: 12px;
+  width: 40vw;
+}
+
+.school-card__name {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0px;
+}
+
+.school-card__location {
+  font-size: 15px;
+  margin: 0px;
+}
+
+.school-card__details-button {
+  background-color: lightgrey;
+  border: none;
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.school-card__details-button:hover {
+  cursor: pointer;
 }
 
 .schools-container {
   display: flex;
 }
 
-.data-A,
-.data-B {
+.school-card__grades,
+.school-card__students {
+  font-size: 15px;
+  margin: 0px;
+}
+
+.school-card__info,
+.school-card__stats {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.dropdown-container {
-  display: flex;
+.schools-dashboard__schools-container {
+  right: 0;
 }
 
-.results-labels {
-  display: flex;
-}
-.results-labels div {
-  margin: 10px;
+.schools-dashboard__results-labels {
 }
 
-.pagination-container {
+.schools-dashboard__content-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
-.pagination-container button {
-  height: 20px;
-}
-
-.pagination-container-buttons {
+.schools-dashboard__content-container__primary {
   display: flex;
+  flex-direction: row;
+  justify-items: space-between;
+  align-content: center;
 }
 
-.search-results-container {
+/* .schools-dashboard__content-container:first-child {
+  width: 10vw;
+} */
+
+.schools-dashboard__content-container__schools {
+  width: 10vw;
+}
+
+.schools-dashboard__view-options {
   display: flex;
-  flex-direction: column;
-  list-style-type: none;
-  align-items: center;
+  margin-left: 15px;
+}
+.schools-dashboard__view-options div {
+  margin-right: 85px;
 }
 
-.search-results-container button {
-  background-color: white;
-  border: 1px solid rgb(192, 192, 192);
-  border-top: none;
-  padding: 5px;
-  text-decoration: none;
-}
-
-.search-result:hover {
-  background-color: rgb(247, 247, 247);
-  cursor: pointer;
+.active-view {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
 }
 
 .active-view,

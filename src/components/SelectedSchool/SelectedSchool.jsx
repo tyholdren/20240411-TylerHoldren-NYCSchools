@@ -21,7 +21,7 @@ export default function SelectedSchool({
   const UNDEFINED_MESSAGE = 'N/A';
 
   return (
-    <article className="school-container">
+    <article className="selected-school">
       <header className="school-header">
         <h1 className="school-name">{school_name}</h1>
         <p>

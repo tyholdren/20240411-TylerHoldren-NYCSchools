@@ -64,9 +64,9 @@ export default function SchoolsDashboard() {
   };
 
   return (
-    <div>
+    <div className="schools-dashboard">
       <PageHeader selectSchool={handleSelectedSchool} />
-      <div className="dropdown-container">
+      <div className="schools-dashboard__dropdown-container">
         <Dropdown
           buttonValue="Cities *"
           filterValue={CITIES}
@@ -80,41 +80,44 @@ export default function SchoolsDashboard() {
           fetchFilteredResults={handleCityFilterChange}
         />
         <button onClick={() => setSelectedView(VIEW_OPTIONS[0])}>
-          Clear Filters
+          X Clear Filters
         </button>
       </div>
-      <div className="results-labels">
-        {VIEW_OPTIONS.map((view, index) => {
-          return (
-            <div
-              key={index}
-              onClick={() => handleViewSelection(index)}
-              className={
-                selectedView === view ? 'active-view' : 'non-active-view'
-              }
-            >
-              {view}
-            </div>
-          );
-        })}
-      </div>
-      <div className="schools-container">
-        <div>
-          {currentSchools.map((school, index) => (
-            <SchoolCard
-              key={school.dbn}
-              {...school}
-              handleClick={() => handleSelectedSchool(index, false)}
-            />
-          ))}
+
+      <div className="schools-dashboard__content-container">
+        <div className="schools-dashboard__view-options">
+          {VIEW_OPTIONS.map((view, index) => {
+            return (
+              <div
+                key={index}
+                onClick={() => handleViewSelection(index)}
+                className={
+                  selectedView === view ? 'active-view' : 'non-active-view'
+                }
+              >
+                {view}
+              </div>
+            );
+          })}
         </div>
-        <div>
-          {selectedSchool.length > 0 && (
-            <SelectedSchool {...selectedSchool[0]} />
-          )}
+        <div className="schools-dashboard__content-container__primary">
+          <div>
+            {currentSchools.map((school, index) => (
+              <SchoolCard
+                key={school.dbn}
+                {...school}
+                handleClick={() => handleSelectedSchool(index, false)}
+              />
+            ))}
+          </div>
+          <div>
+            {selectedSchool.length > 0 && (
+              <SelectedSchool {...selectedSchool[0]} />
+            )}
+          </div>
         </div>
       </div>
-      <div className="pagination-container">
+      <div className="schools-dashboard__pagination-container">
         <span>{`Results ${offset} - ${offset + 5}`}</span>
         <div className="pagination-container-buttons">
           <button disabled={offset === 0} onClick={handlePrevClick}>
