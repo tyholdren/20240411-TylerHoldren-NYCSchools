@@ -6,7 +6,6 @@ function App() {
     <div className="App">
       <div className="platform-container">
         <h3>Find Your Best NY School</h3>
-
         <SchoolsDashboard />
       </div>
     </div>
