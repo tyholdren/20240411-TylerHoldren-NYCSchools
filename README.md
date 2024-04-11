@@ -50,12 +50,16 @@ Things to still complete:
 - allow user to save filtered queries
 - break CSS into separate files, accompanying .jsx files in their respective components folder
 - if possible, convert to TypeScript for increased error catching
+- responsive UI
+- scrolling capabilities for longer queries
+- figure out if i can get all cities from the API instead of hard coding
+- update onClick event on form to onSubmit. For some reason I'm unable to get the behavior I want with onSubmit. I'm trying to leverage event delegation instead of placing onClick handlers on each <li /> but I've only been able to do this with onClick on the form, which I know is not optimal. 
 
 Done: 
 - implemented caching, so if we ever move backwards in pagination we pull from the cache not re-fetching data
 - leverage limit + offset capabilities built in to API
 - debounced API calls every 500 ms when searching for schools by name, reducing API calls
-- can filter by city (will implement the same for school size)
+- can filter by city (will implement the same for school size) - sometimes it take a while for results to return :(
 - can select to view more info on a particular school from the search bar and the list views
 - for the most part, semantic UI elements, can imporove upon
 
