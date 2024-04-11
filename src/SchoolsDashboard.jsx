@@ -10,10 +10,13 @@ const URL_SCHOOLS = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
 const LIMIT = 5;
 
+const VIEW_OPTIONS = ['All schools', 'Filtered schools', 'My saved schools'];
+
 export default function SchoolsDashboard() {
   const [schoolsCache, setSchoolsCache] = useState({});
   const [currentSchools, setCurrentSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState([]);
+  const [selectedView, setSelectedView] = useState('all schools');
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -62,6 +65,10 @@ export default function SchoolsDashboard() {
     }
   };
 
+  const handleViewSelection = index => {
+    setSelectedView(VIEW_OPTIONS[index]);
+  };
+
   const handlePrevClick = () => {
     setOffset(Math.max(0, offset - LIMIT));
   };
@@ -78,8 +85,19 @@ export default function SchoolsDashboard() {
         <Dropdown buttonValue="Students *" filterValue={TOTAL_STUDENTS} />
       </div>
       <div className="results-labels">
-        <div>All Schools</div>
-        <div>Filtered Schools</div>
+        {VIEW_OPTIONS.map((view, index) => {
+          return (
+            <div
+              key={index}
+              onClick={() => handleViewSelection(index)}
+              className={
+                selectedView === view ? 'active-view' : 'non-active-view'
+              }
+            >
+              {view}
+            </div>
+          );
+        })}
       </div>
       <div className="schools-container">
         <div>

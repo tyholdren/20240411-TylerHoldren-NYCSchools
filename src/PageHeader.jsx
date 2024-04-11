@@ -55,7 +55,6 @@ export default function PageHeader({ selectSchool }) {
 
   return (
     <div>
-      <h1>Find Your Best NY School</h1>
       <form
         onClick={event => {
           event.preventDefault();

@@ -65,3 +65,17 @@
   background-color: rgb(247, 247, 247);
   cursor: pointer;
 }
+
+.active-view,
+.non-active-view {
+  font-weight: bold;
+}
+
+.active-view:hover,
+.non-active-view:hover {
+  cursor: pointer;
+}
+
+.non-active-view {
+  color: rgb(172, 172, 172);
+}
