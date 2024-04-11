@@ -18,26 +18,6 @@ export default function SelectedSchool({
   attendance_rate,
   scores,
 }) {
-  console.log({
-    school_name,
-    zip,
-    city,
-    state_code,
-    finalgrades,
-    total_students,
-    overview_paragraph,
-    neighborhood,
-    location,
-    phone_number,
-    school_email,
-    website,
-    academicopportunities1,
-    academicopportunities2,
-    school_sports,
-    extracurricular_activities,
-    attendance_rate,
-    scores,
-  });
   const UNDEFINED_MESSAGE = 'N/A';
 
   return (

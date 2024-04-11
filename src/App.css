@@ -49,6 +49,8 @@
 .search-results-container {
   display: flex;
   flex-direction: column;
+  list-style-type: none;
+  align-items: center;
 }
 
 .search-results-container button {
@@ -56,6 +58,7 @@
   border: 1px solid rgb(192, 192, 192);
   border-top: none;
   padding: 5px;
+  text-decoration: none;
 }
 
 .search-result:hover {

@@ -54,42 +54,45 @@ export default function PageHeader({ selectSchool }) {
   };
 
   return (
-    <div
-      onClick={event => {
-        if (event.target.tagName === 'BUTTON') {
-          const selectedSchool = getFromLoadedResults(event);
-          selectSchool(null, ...selectedSchool);
-        }
-      }}
-    >
-      <label htmlFor="school-search">
-        Find the school that best matches your needs
-      </label>
-      <input
-        id="school-search"
-        name="school-search"
-        type="text"
-        value={searchInput}
-        placeholder="Search by school name"
-        onChange={handleChange}
-      />
-      <div>
-        <label htmlFor="search-results" />
-        <div className="search-results-container">
-          {searchResults.length > 0 &&
-            searchResults.map((result, index) => {
-              return (
-                <button
-                  key={`result-${index}`}
-                  className="search-result"
-                  value={result}
-                >
-                  {result.school_name}
-                </button>
-              );
-            })}
+    <div>
+      <h1>Find Your Best NY School</h1>
+      <form
+        onClick={event => {
+          event.preventDefault();
+          if (event.target.tagName === 'BUTTON') {
+            const selectedSchool = getFromLoadedResults(event);
+            selectSchool(null, ...selectedSchool);
+          }
+        }}
+      >
+        <label htmlFor="school-search">
+          Find the school that best matches your needs
+        </label>
+        <input
+          id="school-search"
+          role="searchbox"
+          name="school-search"
+          value={searchInput}
+          placeholder="Search by school name"
+          aria-label="School search"
+          onChange={handleChange}
+        />
+        <div>
+          <nav aria-label="Search results" />
+          <ul className="search-results-container">
+            {searchResults.length > 0 &&
+              searchResults.map((result, index) => {
+                return (
+                  <li key={`result-${index}`}>
+                    <button className="search-result" value={result}>
+                      {result.school_name}
+                    </button>
+                  </li>
+                );
+              })}
+          </ul>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
