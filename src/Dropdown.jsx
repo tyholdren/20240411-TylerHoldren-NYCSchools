@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 
-const filteredCitiesURL =
-  'https://data.cityofnewyork.us/resource/s3k6-pzi2.json?city=';
-
 export default function Dropdown({
   buttonValue,
   filterValue,
+  updateView,
   fetchFilteredResults,
 }) {
   const [showFilterOptions, setShowFilterOptions] = useState(false);
@@ -16,8 +14,8 @@ export default function Dropdown({
   };
 
   const handleFilterChange = event => {
-    console.log('handle filter change:', event);
     setSelectedFilter(event.target.value);
+    updateView();
   };
 
   useEffect(() => {
@@ -27,8 +25,6 @@ export default function Dropdown({
       console.error('Error fetching data:', error);
     }
   }, [selectedFilter]);
-
-  //console.log({ selectedFilter });
 
   return (
     <div>

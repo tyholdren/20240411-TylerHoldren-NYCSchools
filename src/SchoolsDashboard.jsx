@@ -1,4 +1,5 @@
 import SchoolCard from './SchoolCard';
+import { fetchSchoolsAndScores } from './fetchSchoolsAndScores';
 import Dropdown from './Dropdown';
 import { useState, useEffect } from 'react';
 import SelectedSchool from './SelectedSchool';
@@ -7,7 +8,6 @@ import PageHeader from './PageHeader';
 import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from './utils';
 
 let BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
-const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
 const LIMIT = 5;
 
 export default function SchoolsDashboard() {
@@ -18,44 +18,18 @@ export default function SchoolsDashboard() {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    fetchSchoolsAndScores(null);
-  }, [offset]);
-
-  async function fetchSchoolsAndScores(cityFilter) {
-    let baseURL = `${BASE_URL}?$limit=${LIMIT}&$offset=${offset}`;
-    if (cityFilter) {
-      baseURL += `&city=${encodeURIComponent(cityFilter)}`;
-    }
-    if (schoolsCache[offset] && !cityFilter) {
-      setCurrentSchools(schoolsCache[offset]);
-      if (selectedSchool.length === 0) {
-        setSelectedSchool([schoolsCache[offset][0]]);
-      }
-    } else {
-      try {
-        const response = await fetch(baseURL);
-        const data = await response.json();
-        const schoolsWithScores = await Promise.all(
-          data.map(async school => {
-            const scoresResponse = await fetch(`${URL_SCORES}${school.dbn}`);
-            const scoresData = await scoresResponse.json();
-            return {
-              ...school,
-              scores: scoresData.length ? scoresData[0] : null,
-            };
-          })
-        );
-        const updatedCache = { ...schoolsCache, [offset]: schoolsWithScores };
-        setSchoolsCache(updatedCache);
-        setCurrentSchools(schoolsWithScores);
-        if (selectedSchool.length === 0) {
-          setSelectedSchool([schoolsWithScores[0]]);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-  }
+    fetchSchoolsAndScores({
+      cityFilter: null,
+      setSchoolsCache,
+      setCurrentSchools,
+      setSelectedSchool,
+      schoolsCache,
+      offset,
+      selectedSchool,
+      BASE_URL,
+      LIMIT,
+    });
+  }, [offset, selectedSchool]);
 
   const handleSelectedSchool = (index, selectedSchool) => {
     if (index === null) {
@@ -78,7 +52,15 @@ export default function SchoolsDashboard() {
   };
 
   const handleCityFilterChange = cityFilter => {
-    fetchSchoolsAndScores(cityFilter);
+    fetchSchoolsAndScores({
+      cityFilter,
+      offset,
+      setSchoolsCache,
+      setCurrentSchools,
+      setSelectedSchool,
+      schoolsCache,
+      selectedSchool,
+    });
   };
 
   return (
@@ -88,13 +70,18 @@ export default function SchoolsDashboard() {
         <Dropdown
           buttonValue="Cities *"
           filterValue={CITIES}
+          updateView={() => setSelectedView(VIEW_OPTIONS[1])}
           fetchFilteredResults={handleCityFilterChange}
         />
         <Dropdown
           buttonValue="Students *"
           filterValue={TOTAL_STUDENTS}
+          updateView={() => setSelectedView(VIEW_OPTIONS[1])}
           fetchFilteredResults={handleCityFilterChange}
         />
+        <button onClick={() => setSelectedView(VIEW_OPTIONS[0])}>
+          Clear Filters
+        </button>
       </div>
       <div className="results-labels">
         {VIEW_OPTIONS.map((view, index) => {
