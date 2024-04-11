@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+Prompt: 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+REQUIREMENTS:
 
-## Available Scripts
+The app requirements are rather high-level and vague. If details are omitted, it is because we will be happy with a wide variety of functional solutions. Feel free to be creative and impress with code and UX (see more details down). You are allowed to use all online resources you can find and any 3rd party library if desired. Remember to make it useful for an actual user/student.
 
-In the project directory, you can run:
+Create a web app (preferably React and Typescript) to provide information on NYC High schools.
 
-### `npm start`
+Display a list of NYC High Schools.
+Get your data here: https://data.cityofnewyork.us/Education/DOE-High-School-Directory-2017/s3k6-pzi2
+Check this api - https://data.cityofnewyork.us/resource/s3k6-pzi2.json
+Selecting a school should show additional information about the school
+Display all the SAT scores - include Math, Reading and Writing.
+SAT data here: https://data.cityofnewyork.us/Education/SAT-Results/f9bf-2cp4
+It is up to you to decide what additional information to display.
+In order to prevent you from running down rabbit holes that are less important to us, try to prioritize the following:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+What is Important
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Meet the basic App requirements.
+The App should work like it would in production – error handling, edge conditions, stability and speed is important.
+Well-constructed, easy-to-follow, commented code (especially comment hacks or workarounds made in the interest of expediency (i.e. // given more time I would prefer to wrap this in a blah blah blah pattern blah blah )).
+Proper architecture with separation of concerns and best-practice patterns.
+Modern asynchronous programming techniques.
+What is Less Important
 
-### `npm test`
+Demonstrating technologies or techniques you are not already familiar with.
+Only add code which you want us to read and evaluate.
+Bonus Points!
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Good UX and UI
+Samples of Unit testing. Examples of types of tests you would write rather than 100% code coverage.
+Demonstrate understanding of development with accessibility in mind: samples of code that address one or more WCAG principles and/or a specific WCAG checkpoint. We are not looking for a complete coverage, but rather for a sample of ADA compliant code.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Things to still complete: 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- custom pagination, currently its hard-coded
+- have search results be abosulutely positions, they're currently moving the rest of the UI
+- same with filtering options
+- allow user to save list of schools
+- user can navigate to saved view
+- simple visual alignments in UI
+- accessiblility, ARIA, etc...
+- error handling, how to communicate error states to users
+- add comments to justify layout decisions
+- basic unit testing
+- render blank states if user has no saved searches
+- allow user to save filtered queries
+- break CSS into separate files, accompanying .jsx files in their respective components folder
+- if possible, convert to TypeScript for increased error catching
 
-### `npm run eject`
+Done: 
+- implemented caching, so if we ever move backwards in pagination we pull from the cache not re-fetching data
+- leverage limit + offset capabilities built in to API
+- debounced API calls every 500 ms when searching for schools by name, reducing API calls
+- can filter by city (will implement the same for school size)
+- can select to view more info on a particular school from the search bar and the list views
+- for the most part, semantic UI elements, can imporove upon
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
