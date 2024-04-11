@@ -1,19 +1,19 @@
 export default function School({
-  schoolName,
+  school_name,
   city,
-  finalGrades,
-  totalStudents,
+  finalgrades,
+  total_students,
   handleClick,
 }) {
   return (
     <div className="school-container">
       <div className="data-A">
-        <div>{schoolName}</div>
+        <div>{school_name}</div>
         <div>Located in: {city}</div>
       </div>
       <div className="data-B">
-        <div>Grades: {finalGrades}</div>
-        <div>Students: {totalStudents}</div>
+        <div>Grades: {finalgrades}</div>
+        <div>Students: {total_students}</div>
       </div>
       <button onClick={handleClick}>See More Info</button>
     </div>

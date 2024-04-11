@@ -40,9 +40,9 @@ export default function Schools() {
 
         try {
           const response = await fetch(schoolsUrl);
-          const testResponse = await fetch(fetchURL);
-          const testData = await testResponse.json();
-          console.log({ testData });
+          // const testResponse = await fetch(fetchURL);
+          // const testData = await testResponse.json();
+          // console.log({ testData });
           const data = await response.json();
           const schoolsWithScores = await Promise.all(
             data.map(async school => {
@@ -93,88 +93,17 @@ export default function Schools() {
       </div>
       <div className="schools-container">
         <div>
-          {currentSchools.map(
-            (
-              {
-                dbn,
-                school_name,
-                finalgrades,
-                total_students,
-                zip,
-                city,
-                state_code,
-              },
-              index
-            ) => {
-              return (
-                <School
-                  key={`${dbn}-${index}`}
-                  dbn={dbn}
-                  schoolName={school_name}
-                  finalGrades={finalgrades}
-                  totalStudents={total_students}
-                  zip={zip}
-                  city={city}
-                  stateCode={state_code}
-                  handleClick={() => handleSelectedSchool(index)}
-                />
-              );
-            }
-          )}
+          {currentSchools.map((school, index) => (
+            <School
+              key={school.dbn}
+              {...school}
+              handleClick={() => handleSelectedSchool(index)}
+            />
+          ))}
         </div>
         <div>
-          {selectedSchool.length > 0 ? (
-            selectedSchool.map(
-              (
-                {
-                  dbn,
-                  school_name,
-                  zip,
-                  city,
-                  state_code,
-                  finalgrades,
-                  total_students,
-                  overview_paragraph,
-                  neighborhood,
-                  location,
-                  phone_number,
-                  school_email,
-                  website,
-                  academicopportunities1,
-                  academicopportunities2,
-                  school_sports,
-                  extracurricular_activities,
-                  attendance_rate,
-                  scores,
-                },
-                index
-              ) => (
-                <SelectedSchool
-                  key={`${dbn}-${index}`}
-                  dbn={dbn}
-                  schoolName={school_name}
-                  finalGrades={finalgrades}
-                  totalStudents={total_students}
-                  zip={zip}
-                  city={city}
-                  stateCode={state_code}
-                  scores={scores}
-                  overview_paragraph={overview_paragraph}
-                  neighborhood={neighborhood}
-                  location={location}
-                  phone_number={phone_number}
-                  school_email={school_email}
-                  website={website}
-                  academicopportunities1={academicopportunities1}
-                  academicopportunities2={academicopportunities2}
-                  school_sports={school_sports}
-                  extracurricular_activities={extracurricular_activities}
-                  attendance_rate={attendance_rate}
-                />
-              )
-            )
-          ) : (
-            <div>No selected school or SAT scores available.</div>
+          {selectedSchool.length > 0 && (
+            <SelectedSchool {...selectedSchool[0]} />
           )}
         </div>
       </div>

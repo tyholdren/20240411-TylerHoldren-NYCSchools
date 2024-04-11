@@ -1,10 +1,10 @@
 export default function SelectedSchool({
-  schoolName,
+  school_name,
   zip,
   city,
-  stateCode,
-  finalGrades,
-  totalStudents,
+  state_code,
+  finalgrades,
+  total_students,
   overview_paragraph,
   neighborhood,
   location,
@@ -23,15 +23,15 @@ export default function SelectedSchool({
   return (
     <article className="school-container">
       <header className="school-header">
-        <h1>{schoolName}</h1>
+        <h1>{school_name}</h1>
         <p>
-          Located in: {city}, {stateCode}, {zip}
+          Located in: {city}, {state_code}, {zip}
         </p>
       </header>
       <section className="school-details">
         <h2>Basic Information</h2>
-        <p>Grades: {finalGrades}</p>
-        <p>Students: {totalStudents || UNDEFINED_MESSAGE}</p>
+        <p>Grades: {finalgrades}</p>
+        <p>Students: {total_students || UNDEFINED_MESSAGE}</p>
         <p>Neighborhood: {neighborhood || UNDEFINED_MESSAGE}</p>
         <p>Location: {location || UNDEFINED_MESSAGE}</p>
         <p>Attendance rate: {attendance_rate || UNDEFINED_MESSAGE}</p>
