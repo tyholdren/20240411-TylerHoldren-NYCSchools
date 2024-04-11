@@ -23,7 +23,7 @@ export default function SelectedSchool({
   return (
     <article className="school-container">
       <header className="school-header">
-        <h1>{school_name}</h1>
+        <h1 className="school-name">{school_name}</h1>
         <p>
           Located in: {city}, {state_code}, {zip}
         </p>

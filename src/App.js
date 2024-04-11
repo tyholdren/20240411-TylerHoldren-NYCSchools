@@ -1,6 +1,6 @@
 import PageHeader from './PageHeader';
 import SelectedSchool from './SelectedSchool';
-import Schools from './Schools';
+import SchoolsDashboard from './SchoolsDashboard';
 import './App.css';
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <div className="platform-container">
         <h3>Find Your Best NY School</h3>
         <PageHeader />
-        <Schools />
+        <SchoolsDashboard />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import School from './School';
+import SchoolCard from './SchoolCard';
 import Dropdown from './Dropdown';
 import { useState, useEffect } from 'react';
 import { CITIES, TOTAL_STUDENTS } from './utils';
@@ -21,8 +21,7 @@ const encodedInput = encodeURIComponent(`'${userInput}%'`);
 const query = `?school_name like ${encodedInput}`;
 
 const fetchURL = BASE_URL + query;
-
-export default function Schools() {
+export default function SchoolsDashboard() {
   const [schoolsCache, setSchoolsCache] = useState({});
   const [currentSchools, setCurrentSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState([]);
@@ -94,7 +93,7 @@ export default function Schools() {
       <div className="schools-container">
         <div>
           {currentSchools.map((school, index) => (
-            <School
+            <SchoolCard
               key={school.dbn}
               {...school}
               handleClick={() => handleSelectedSchool(index)}
