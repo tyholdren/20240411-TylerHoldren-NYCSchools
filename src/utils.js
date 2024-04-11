@@ -36,3 +36,9 @@ export const TOTAL_STUDENTS = [
   { value: 500, filter: '400-500' },
   { value: 501, filter: '500+' },
 ];
+
+export const VIEW_OPTIONS = [
+  'All schools',
+  'Filtered schools',
+  'My saved schools',
+];

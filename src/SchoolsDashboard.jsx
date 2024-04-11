@@ -4,58 +4,58 @@ import { useState, useEffect } from 'react';
 import SelectedSchool from './SelectedSchool';
 import PageHeader from './PageHeader';
 
-import { CITIES, TOTAL_STUDENTS } from './utils';
+import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from './utils';
 
-const URL_SCHOOLS = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
+let BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
 const LIMIT = 5;
-
-const VIEW_OPTIONS = ['All schools', 'Filtered schools', 'My saved schools'];
 
 export default function SchoolsDashboard() {
   const [schoolsCache, setSchoolsCache] = useState({});
   const [currentSchools, setCurrentSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState([]);
-  const [selectedView, setSelectedView] = useState('all schools');
+  const [selectedView, setSelectedView] = useState(VIEW_OPTIONS[0]);
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    async function fetchSchoolsAndScores() {
-      if (schoolsCache[offset]) {
-        setCurrentSchools(schoolsCache[offset]);
-        if (selectedSchool.length === 0) {
-          setSelectedSchool([schoolsCache[offset][0]]);
-        }
-      } else {
-        const schoolsUrl = `${URL_SCHOOLS}?$limit=${LIMIT}&$offset=${offset}`;
+    fetchSchoolsAndScores(null);
+  }, [offset]);
 
-        try {
-          const response = await fetch(schoolsUrl);
-          const data = await response.json();
-          const schoolsWithScores = await Promise.all(
-            data.map(async school => {
-              const scoresResponse = await fetch(`${URL_SCORES}${school.dbn}`);
-              const scoresData = await scoresResponse.json();
-              return {
-                ...school,
-                scores: scoresData.length ? scoresData[0] : null,
-              };
-            })
-          );
-          const updatedCache = { ...schoolsCache, [offset]: schoolsWithScores };
-          setSchoolsCache(updatedCache);
-          setCurrentSchools(schoolsWithScores);
-          if (selectedSchool.length === 0) {
-            setSelectedSchool([schoolsWithScores[0]]);
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
+  async function fetchSchoolsAndScores(cityFilter) {
+    let baseURL = `${BASE_URL}?$limit=${LIMIT}&$offset=${offset}`;
+    if (cityFilter) {
+      baseURL += `&city=${encodeURIComponent(cityFilter)}`;
+    }
+    if (schoolsCache[offset] && !cityFilter) {
+      setCurrentSchools(schoolsCache[offset]);
+      if (selectedSchool.length === 0) {
+        setSelectedSchool([schoolsCache[offset][0]]);
+      }
+    } else {
+      try {
+        const response = await fetch(baseURL);
+        const data = await response.json();
+        const schoolsWithScores = await Promise.all(
+          data.map(async school => {
+            const scoresResponse = await fetch(`${URL_SCORES}${school.dbn}`);
+            const scoresData = await scoresResponse.json();
+            return {
+              ...school,
+              scores: scoresData.length ? scoresData[0] : null,
+            };
+          })
+        );
+        const updatedCache = { ...schoolsCache, [offset]: schoolsWithScores };
+        setSchoolsCache(updatedCache);
+        setCurrentSchools(schoolsWithScores);
+        if (selectedSchool.length === 0) {
+          setSelectedSchool([schoolsWithScores[0]]);
         }
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     }
-
-    fetchSchoolsAndScores();
-  }, [offset]);
+  }
 
   const handleSelectedSchool = (index, selectedSchool) => {
     if (index === null) {
@@ -77,12 +77,24 @@ export default function SchoolsDashboard() {
     setOffset(offset + LIMIT);
   };
 
+  const handleCityFilterChange = cityFilter => {
+    fetchSchoolsAndScores(cityFilter);
+  };
+
   return (
     <div>
       <PageHeader selectSchool={handleSelectedSchool} />
       <div className="dropdown-container">
-        <Dropdown buttonValue="Cities *" filterValue={CITIES} />
-        <Dropdown buttonValue="Students *" filterValue={TOTAL_STUDENTS} />
+        <Dropdown
+          buttonValue="Cities *"
+          filterValue={CITIES}
+          fetchFilteredResults={handleCityFilterChange}
+        />
+        <Dropdown
+          buttonValue="Students *"
+          filterValue={TOTAL_STUDENTS}
+          fetchFilteredResults={handleCityFilterChange}
+        />
       </div>
       <div className="results-labels">
         {VIEW_OPTIONS.map((view, index) => {
