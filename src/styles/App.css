@@ -1,5 +1,75 @@
 .App {
   text-align: center;
+  padding: 15px;
+}
+
+.school_search_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.school_search_form input {
+  width: 30vw;
+  margin-top: 15px;
+}
+
+.schools-dashboard__dropdown-container {
+  display: flex;
+  margin: 15px;
+}
+
+.schools-dashboard__dropdown-container button {
+  margin-right: 27px;
+  background-color: white;
+  border: 1px solid black;
+  padding: 7px;
+  border-radius: 6px;
+}
+
+.schools-dashboard__dropdown-container button:hover {
+  cursor: pointer;
+}
+
+.search-results-container {
+  width: 30vw;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-results-container ul {
+  margin: 0px;
+}
+
+.search-results-container li {
+  text-decoration: none;
+  display: flex;
+  margin-right: 0px;
+  margin-top: 0px;
+}
+
+.search-results-container li button:hover {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
+.search-results-container li button {
+  padding: 8px;
+  background-color: white;
+  border: 1px solid #f5f5f5;
+  margin-top: 0px;
+}
+
+.search-result {
+  text-decoration: none;
+  width: 100vw;
+  padding: 0px;
+  display: flex;
+  justify-content: left;
+  margin: 0px;
 }
 
 .school-card {
@@ -58,9 +128,6 @@
   right: 0;
 }
 
-.schools-dashboard__results-labels {
-}
-
 .schools-dashboard__content-container {
   display: flex;
   flex-direction: column;
@@ -72,10 +139,6 @@
   justify-items: space-between;
   align-content: center;
 }
-
-/* .schools-dashboard__content-container:first-child {
-  width: 10vw;
-} */
 
 .schools-dashboard__content-container__schools {
   width: 10vw;
@@ -106,4 +169,90 @@
 
 .non-active-view {
   color: rgb(172, 172, 172);
+}
+
+.selected-school-container {
+  display: flex;
+  flex-direction: column;
+  align-content: flext-start;
+  border: 1px solid black;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 15px;
+}
+
+.selected-school-container header,
+.selected-school-container section {
+  align: left;
+  justify-content: left;
+}
+
+.selected-school__school-name {
+  font-size: 20px;
+}
+
+.selected-school__school-details {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  font-size: 15px;
+  margin: 0px;
+}
+
+.selected-school__school-details h2,
+.selected-school__school-details p {
+  margin: 0px;
+  display: flex;
+  font-size: 15px;
+}
+
+.selected-school__sat-scores h2,
+.selected-school__sat-scores p {
+  font-size: 15px;
+  display: flex;
+  margin: 0px;
+}
+
+.selected-school__contact-info h2,
+.selected-school__contact-info p {
+  font-size: 15px;
+  display: flex;
+  margin: 0px;
+}
+
+.selected-school__additional-info h2,
+.selected-school__additional-info ul,
+.selected-school__additional-info p {
+  font-size: 15px;
+  display: flex;
+  margin: 0px;
+}
+
+.selected-school__additional-info .list {
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-content: left;
+  margin: 0px;
+}
+
+.schools-dashboard__pagination-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.schools-dashboard__pagination-container div,
+.schools-dashboard__pagination-container span {
+  display: flex;
+  margin-right: 15px;
+}
+
+.pagination-container-buttons button {
+  margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pagination-container-buttons {
+  margin-right: 15px;
 }

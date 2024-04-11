@@ -21,14 +21,14 @@ export default function SelectedSchool({
   const UNDEFINED_MESSAGE = 'N/A';
 
   return (
-    <article className="selected-school">
+    <article className="selected-school-container">
       <header className="school-header">
-        <h1 className="school-name">{school_name}</h1>
+        <h1 className="selected-school__school-name">{school_name}</h1>
         <p>
           Located in: {city}, {state_code}, {zip}
         </p>
       </header>
-      <section className="school-details">
+      <section className="selected-school__school-details">
         <h2>Basic Information</h2>
         <p>Grades: {finalgrades}</p>
         <p>Students: {total_students || UNDEFINED_MESSAGE}</p>
@@ -36,7 +36,7 @@ export default function SelectedSchool({
         <p>Location: {location || UNDEFINED_MESSAGE}</p>
         <p>Attendance rate: {attendance_rate || UNDEFINED_MESSAGE}</p>
       </section>
-      <section className="sat-scores">
+      <section className="selected-school__sat-scores">
         <h2>SAT Scores</h2>
         <p>
           Number of Test Takers:{' '}
@@ -54,7 +54,7 @@ export default function SelectedSchool({
           {scores ? scores.sat_writing_avg_score : UNDEFINED_MESSAGE}
         </p>
       </section>
-      <section className="contact-info">
+      <section className="selected-school__contact-info">
         <h2>Contact Information</h2>
         <p>Phone: {phone_number || UNDEFINED_MESSAGE}</p>
         <p>Email: {school_email || UNDEFINED_MESSAGE}</p>
@@ -69,9 +69,9 @@ export default function SelectedSchool({
           )}
         </p>
       </section>
-      <section className="additional-info">
+      <section className="selected-school__additional-info">
         <h2>Additional Opportunities</h2>
-        <ul>
+        <ul className="selected-school__additional-info list">
           <li>{academicopportunities1 || UNDEFINED_MESSAGE}</li>
           <li>{academicopportunities2 || UNDEFINED_MESSAGE}</li>
         </ul>

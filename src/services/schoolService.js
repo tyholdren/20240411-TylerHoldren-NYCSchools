@@ -1,6 +1,6 @@
 const URL_SCHOOLS = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
-const LIMIT = 5;
+const LIMIT = 8;
 
 export const fetchSchoolsAndScores = async ({
   cityFilter,

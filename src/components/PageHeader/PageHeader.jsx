@@ -56,9 +56,12 @@ export default function PageHeader({ selectSchool }) {
   return (
     <div>
       <form
+        className="school_search_form"
         onClick={event => {
+          console.log(event.target.tagName);
           event.preventDefault();
           if (event.target.tagName === 'BUTTON') {
+            setSearchInput(event.target.textContent);
             const selectedSchool = getFromLoadedResults(event);
             selectSchool(null, ...selectedSchool);
           }
@@ -67,16 +70,16 @@ export default function PageHeader({ selectSchool }) {
         <label htmlFor="school-search">
           Find the school that best matches your needs
         </label>
-        <input
-          id="school-search"
-          role="searchbox"
-          name="school-search"
-          value={searchInput}
-          placeholder="Search by school name"
-          aria-label="School search"
-          onChange={handleChange}
-        />
-        <div>
+        <div className="school-search__container">
+          <input
+            id="school-search"
+            role="searchbox"
+            name="school-search"
+            value={searchInput}
+            placeholder="Search by school name"
+            aria-label="School search"
+            onChange={handleChange}
+          />
           <nav aria-label="Search results" />
           <ul className="search-results-container">
             {searchResults.length > 0 &&

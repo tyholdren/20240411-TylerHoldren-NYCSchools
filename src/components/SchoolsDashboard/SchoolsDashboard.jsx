@@ -8,7 +8,7 @@ import PageHeader from '../PageHeader/PageHeader';
 import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from '../../utils/constants';
 
 let BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
-const LIMIT = 5;
+const LIMIT = 8;
 
 export default function SchoolsDashboard() {
   const [schoolsCache, setSchoolsCache] = useState({});
@@ -118,12 +118,22 @@ export default function SchoolsDashboard() {
         </div>
       </div>
       <div className="schools-dashboard__pagination-container">
-        <span>{`Results ${offset} - ${offset + 5}`}</span>
+        <span>{`Results ${offset} - ${offset + 8}`}</span>
         <div className="pagination-container-buttons">
           <button disabled={offset === 0} onClick={handlePrevClick}>
             See previous schools
           </button>
           <button onClick={handleNextClick}>See more schools</button>
+          <div>
+            <span>See more results per page </span>
+            <select>
+              <option value={'-'}>{'-'}</option>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
