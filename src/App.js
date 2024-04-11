@@ -1,5 +1,5 @@
-import SchoolsDashboard from './SchoolsDashboard';
-import './App.css';
+import SchoolsDashboard from './components/SchoolsDashboard/SchoolsDashboard';
+import './styles/App.css';
 
 function App() {
   return (

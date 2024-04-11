@@ -1,11 +1,11 @@
-import SchoolCard from './SchoolCard';
-import { fetchSchoolsAndScores } from './fetchSchoolsAndScores';
-import Dropdown from './Dropdown';
+import SchoolCard from '../SchoolCard/SchoolCard';
+import { fetchSchoolsAndScores } from '../../services/schoolService';
+import Dropdown from '../Dropdown/Dropdown';
 import { useState, useEffect } from 'react';
-import SelectedSchool from './SelectedSchool';
-import PageHeader from './PageHeader';
+import SelectedSchool from '../SelectedSchool/SelectedSchool';
+import PageHeader from '../PageHeader/PageHeader';
 
-import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from './utils';
+import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from '../../utils/constants';
 
 let BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const LIMIT = 5;
