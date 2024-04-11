@@ -1,32 +1,43 @@
 import { useState, useEffect } from 'react';
 
-// const URL_FILTER = `https://data.cityofnewyork.us/resource/s3k6-pzi2.json?school_name=${encodedSchoolName}&$limit=1`;
-
-const BASE_URL =
-  'https://data.cityofnewyork.us/resource/s3k6-pzi2.json?$where=school_name like ';
-
 export default function PageHeader() {
   const [searchInput, setSearchInput] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-  useEffect(() => {
-    async function fetchSearchResults() {
-      if (searchInput) {
-        const encodedInput = encodeURIComponent(searchInput.toLowerCase());
-        const fetchURL = `https://data.cityofnewyork.us/resource/s3k6-pzi2.json?$where=starts_with(lower(school_name), '${encodedInput}')&$limit=5`;
+  const debounce = (fn, delay) => {
+    let timeoutId = null;
 
-        console.log({ fetchURL });
-        try {
-          const response = await fetch(fetchURL);
-          const results = await response.json();
-          console.log({ results });
-          setSearchResults(results);
-        } catch (error) {
-          console.log(`Search input error ${error}`);
-        }
+    return function (...args) {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
+
+      timeoutId = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedFetchSearchResults = debounce(async input => {
+    const encodedInput = encodeURIComponent(input.toLowerCase());
+    const fetchURL = `https://data.cityofnewyork.us/resource/s3k6-pzi2.json?$where=starts_with(lower(school_name), '${encodedInput}')&$limit=5`;
+
+    try {
+      const response = await fetch(fetchURL);
+      const results = await response.json();
+      setSearchResults(results);
+    } catch (error) {
+      console.error(`Search input error: ${error}`);
     }
-    fetchSearchResults();
+  }, 500);
+
+  useEffect(() => {
+    if (searchInput) {
+      debouncedFetchSearchResults(searchInput);
+    }
+    if (searchInput.length === 0) {
+      setSearchResults([]);
+    }
   }, [searchInput]);
 
   const handleChange = event => {
@@ -48,16 +59,20 @@ export default function PageHeader() {
       />
       <div>
         <label htmlFor="search-results" />
-        <select>
+        <div className="search-results-container">
           {searchResults.length > 0 &&
             searchResults.map((result, index) => {
               return (
-                <option key={`result-${index}`} value={result}>
+                <button
+                  key={`result-${index}`}
+                  className="search-result"
+                  value={result}
+                >
                   {result.school_name}
-                </option>
+                </button>
               );
             })}
-        </select>
+        </div>
       </div>
     </div>
   );
