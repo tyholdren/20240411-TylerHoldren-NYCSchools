@@ -8,6 +8,11 @@ export default function PageHeader({ selectSchool }) {
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
+  /*
+  NOTE: The MUI Autocomplete component inherently uses debouncing on input changes. 
+  This optimizes performance by reducing the number of API calls during user search, as 
+  it waits for the user to finish typing before sending a request.
+  */
   const handleSearch = async (event, value) => {
     const encodedInput = encodeURIComponent(value.toLowerCase());
     const fetchURL = `https://data.cityofnewyork.us/resource/s3k6-pzi2.json?$where=starts_with(lower(school_name), '${encodedInput}')&$limit=5`;
@@ -15,7 +20,7 @@ export default function PageHeader({ selectSchool }) {
     try {
       const response = await fetch(fetchURL);
       const results = await response.json();
-      // Ensure that results is an array before setting it to options
+      // NOTE: Ensure that results is an array before setting it to options
       if (Array.isArray(results)) {
         setOptions(results);
       } else {
@@ -24,7 +29,7 @@ export default function PageHeader({ selectSchool }) {
       }
     } catch (error) {
       console.error(`Search input error: ${error}`);
-      setOptions([]); // Reset options to an empty array in case of fetch errors
+      setOptions([]); // NOTE: Reset options to an empty array in case of fetch errors
     }
   };
 

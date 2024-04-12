@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { fetchSchoolsAndScores } from '../../services/schoolService';
 import TooltipWrapper from '../TooltipWrapper/TooltipWrapper';
 import MultipleSelect from '../MultipleSelect/MultipleSelect';
 import SelectedSchool from '../SelectedSchool/SelectedSchool';
@@ -9,9 +8,13 @@ import Typography from '@mui/material/Typography';
 
 import ScrollableList from '../ScrollableList/ScrollableList';
 
+// NOTE: Modularized data fetching logic enhances maintainability and reusability across components
+import { fetchSchoolsAndScores } from '../../services/schoolService';
+
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
+// NOTE: Importing constants from a utilities file keeps static content centralized and easy to manage.
 import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from '../../utils/constants';
 import PaginationSelect from '../PaginationSelect/PaginationSelect';
 
@@ -24,6 +27,10 @@ const DEFAULT_FILTERS = {
 export default function SchoolsDashboard() {
   const DEFAULT_VIEW = VIEW_OPTIONS.allSchools.filterName;
 
+  /*
+   NOTE: We leverage the cache for data persistence to avoid 
+  redundant API calls, thus optimizing performance and reducing data fetch time.
+  */
   const [schoolsCache, setSchoolsCache] = useState({});
   const [currentSchools, setCurrentSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState([]);
@@ -31,10 +38,16 @@ export default function SchoolsDashboard() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [shouldClearFilter, setShouldClearFilter] = useState(false);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
-
+  /*
+  NOTE: Using pagination with a limit and offset reduces the number of items fetched at a time,
+  minimizing API load and improving application performance.
+  */
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(8);
-
+  /*
+   NOTE: SQL queries within fetchSchoolsAndScores are constructed to request specific ranges of
+   data (using limit and offset), resulting in faster query execution and lower memory consumption.
+  */
   useEffect(() => {
     fetchSchoolsAndScores({
       cityFilter: null,
@@ -65,7 +78,10 @@ export default function SchoolsDashboard() {
   useEffect(() => {
     handleReset();
   }, [limit, shouldClearFilter]);
-
+  /*
+   NOTE: Implementing a hard reset to revert the app to its initial state ensures
+   a consistent user experience and helps prevent state-related bugs.
+  */
   const handleReset = () => {
     setSchoolsCache({});
     setCurrentSchools([]);
@@ -141,16 +157,15 @@ export default function SchoolsDashboard() {
   const handleStudentFilterChange = selectedRange => {
     let lowValue, highValue;
 
-    // If the selected range is '500+', set lowValue to 500 and highValue to an arbitrary large number
+    // NOTE: If the selected range is '500+', set lowValue to 500 and highValue to an arbitrarily large number
     if (selectedRange === '500+') {
       lowValue = 500;
-      highValue = 999999; // or some other large number that makes sense for your dataset
+      highValue = 999999;
     } else {
       // For other ranges, split the string by hyphen to get low and high values
       [lowValue, highValue] = selectedRange.split('-').map(Number);
     }
 
-    // Update the filter with the new student count range
     setFilters(previousFilters => ({
       ...previousFilters,
       studentFilter: [lowValue, highValue],

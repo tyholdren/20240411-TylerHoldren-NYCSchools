@@ -1,3 +1,4 @@
+// NOTE: Storing API URLs in static variables as they are constant and unchanging, which is a good practice for configuration.
 const URL_SCHOOLS = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
 
@@ -12,12 +13,16 @@ export const fetchSchoolsAndScores = async ({
   selectedSchool,
   limit,
 }) => {
+  // NOTE: Constructing the base URL using limit and offset allows for efficient pagination without over-fetching.
   let baseURL = `${URL_SCHOOLS}?$limit=${limit}&$offset=${offset}`;
 
   // Initialize an array to hold query conditions
   let queryCondition = '';
 
-  // Append the city filter if one is provided
+  /*
+  NOTE: Currently, we filter either by city or by the number of students due to time constraints. 
+  In the future, combining both filters could provide more precise results.
+  */
   if (cityFilter) {
     queryCondition = `city='${encodeURIComponent(cityFilter)}'`;
   } else if (studentFilter) {
@@ -30,18 +35,25 @@ export const fetchSchoolsAndScores = async ({
     baseURL += `&$where=${queryCondition}`;
   }
 
+  /*
+  NOTE: Utilizing a cache to avoid redundant API calls for previously fetched data, 
+  which improves performance and reduces unnecessary network traffic.
+  */
   if (schoolsCache[offset] && !cityFilter && !studentFilter) {
     setCurrentSchools(schoolsCache[offset]);
+    // NOTE: Initializing the page with the first school on load to provide immediate context to the user.
     if (selectedSchool !== undefined && selectedSchool.length === 0) {
       setSelectedSchool([schoolsCache[offset][0]]);
     }
   } else {
-    // Fetch new data from the API
     try {
       const schoolsResponse = await fetch(baseURL);
       const schoolsData = await schoolsResponse.json();
 
-      // Get SAT scores for each school
+      /*
+      NOTE: Promise.all is used to wait for all SAT score fetches to complete, 
+      ensuring that the UI is updated with complete data.
+      */
       const schoolsWithScores = await Promise.all(
         schoolsData.map(async school => {
           const scoresResponse = await fetch(`${URL_SCORES}${school.dbn}`);
@@ -66,4 +78,8 @@ export const fetchSchoolsAndScores = async ({
       console.error('Error fetching data:', error);
     }
   }
+  /*
+  NOTE: In the future, optimizing to fetch SAT scores only for the selected 
+  school would further reduce API load and improve response times.
+  */
 };
