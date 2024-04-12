@@ -5,6 +5,10 @@ import { useState, useEffect } from 'react';
 import SelectedSchool from '../SelectedSchool/SelectedSchool';
 import PageHeader from '../PageHeader/PageHeader';
 
+import List from '@mui/material/List';
+
+import ScrollableList from '../ScrollableList/ScrollableList';
+
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
@@ -37,6 +41,9 @@ export default function SchoolsDashboard() {
 
   const handleSelectedSchool = (index, selectedSchool) => {
     if (index === null) {
+      if (selectedSchool === null) {
+        return;
+      }
       setSelectedSchool([selectedSchool]);
     } else {
       setSelectedSchool([currentSchools[index]]);
@@ -72,20 +79,24 @@ export default function SchoolsDashboard() {
       <PageHeader selectSchool={handleSelectedSchool} />
       <div className="schools-dashboard__dropdown-container">
         <MultipleSelect
-          buttonValue="Cities"
+          buttonValue="cities"
           filterValue={CITIES}
           updateView={() => setSelectedView(VIEW_OPTIONS[1])}
           fetchFilteredResults={handleCityFilterChange}
         />
         <MultipleSelect
-          buttonValue="Students"
+          buttonValue="students"
           filterValue={TOTAL_STUDENTS}
           updateView={() => setSelectedView(VIEW_OPTIONS[1])}
           fetchFilteredResults={handleCityFilterChange}
         />
-        <button onClick={() => setSelectedView(VIEW_OPTIONS[0])}>
-          X Clear Filters
-        </button>
+        <Button
+          sx={{ maxHeight: 100 }}
+          variant="contained"
+          onClick={() => setSelectedView(VIEW_OPTIONS[0])}
+        >
+          clear filters
+        </Button>
       </div>
 
       <div className="schools-dashboard__content-container">
@@ -105,15 +116,11 @@ export default function SchoolsDashboard() {
           })}
         </div>
         <div className="schools-dashboard__content-container__primary">
-          <div>
-            {currentSchools.map((school, index) => (
-              <SchoolCard
-                key={school.dbn}
-                {...school}
-                handleClick={() => handleSelectedSchool(index, false)}
-              />
-            ))}
-          </div>
+          <ScrollableList
+            schools={currentSchools}
+            handleSelectedSchool={handleSelectedSchool}
+          ></ScrollableList>
+
           <div>
             {selectedSchool.length > 0 && (
               <SelectedSchool {...selectedSchool[0]} />
@@ -136,7 +143,7 @@ export default function SchoolsDashboard() {
             next
           </Button>
 
-          <PaginationSelect></PaginationSelect>
+          <PaginationSelect />
         </div>
       </div>
     </div>

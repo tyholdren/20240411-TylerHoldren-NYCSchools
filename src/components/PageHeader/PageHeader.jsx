@@ -1,100 +1,56 @@
 import { useState, useEffect } from 'react';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function PageHeader({ selectSchool }) {
-  const [searchInput, setSearchInput] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const loading = open && options.length === 0;
 
-  const debounce = (fn, delay) => {
-    let timeoutId = null;
-
-    return function (...args) {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-
-      timeoutId = setTimeout(() => {
-        fn(...args);
-      }, delay);
-    };
-  };
-
-  const debouncedFetchSearchResults = debounce(async input => {
-    const encodedInput = encodeURIComponent(input.toLowerCase());
+  const handleSearch = async (event, value) => {
+    const encodedInput = encodeURIComponent(value.toLowerCase());
     const fetchURL = `https://data.cityofnewyork.us/resource/s3k6-pzi2.json?$where=starts_with(lower(school_name), '${encodedInput}')&$limit=5`;
 
     try {
       const response = await fetch(fetchURL);
       const results = await response.json();
-      setSearchResults(results);
+      setOptions(results);
     } catch (error) {
       console.error(`Search input error: ${error}`);
     }
-  }, 500);
-
-  useEffect(() => {
-    if (searchInput) {
-      debouncedFetchSearchResults(searchInput);
-    }
-    if (searchInput.length === 0) {
-      setSearchResults([]);
-    }
-  }, [searchInput]);
-
-  const handleChange = event => {
-    setSearchInput(event.target.value);
-  };
-
-  const getFromLoadedResults = event => {
-    const selectedResult = event.target.textContent.toLowerCase();
-    const selectedSchool = searchResults.filter(
-      result => result.school_name.toLowerCase() === selectedResult
-    );
-
-    return selectedSchool;
   };
 
   return (
-    <div>
-      <form
-        className="school_search_form"
-        onClick={event => {
-          console.log(event.target.tagName);
-          event.preventDefault();
-          if (event.target.tagName === 'BUTTON') {
-            setSearchInput(event.target.textContent);
-            const selectedSchool = getFromLoadedResults(event);
-            selectSchool(null, ...selectedSchool);
-          }
-        }}
-      >
-        <label htmlFor="school-search">
-          Find the school that best matches your needs
-        </label>
-        <div className="school-search__container">
-          <input
-            id="school-search"
-            role="searchbox"
-            name="school-search"
-            value={searchInput}
-            placeholder="Search by school name"
-            aria-label="School search"
-            onChange={handleChange}
-          />
-          <nav aria-label="Search results" />
-          <ul className="search-results-container">
-            {searchResults.length > 0 &&
-              searchResults.map((result, index) => {
-                return (
-                  <li key={`result-${index}`}>
-                    <button className="search-result" value={result}>
-                      {result.school_name}
-                    </button>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-      </form>
-    </div>
+    <Autocomplete
+      id="school-search"
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      getOptionLabel={option => option.school_name}
+      options={options}
+      loading={loading}
+      onInputChange={handleSearch}
+      onChange={(event, newValue) => {
+        selectSchool(null, newValue);
+      }}
+      renderInput={params => (
+        <TextField
+          {...params}
+          label="Search by school name"
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <div>
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
+                {params.InputProps.endAdornment}
+              </div>
+            ),
+          }}
+        />
+      )}
+    />
   );
 }

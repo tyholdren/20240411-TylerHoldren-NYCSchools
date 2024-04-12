@@ -1,3 +1,10 @@
+import * as React from 'react';
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+
 export default function SchoolCard({
   school_name,
   city,
@@ -5,24 +12,45 @@ export default function SchoolCard({
   total_students,
   handleClick,
 }) {
+  const grades = finalgrades.length > 10 ? 'credit-based' : finalgrades;
+
   return (
-    <div className="school-card">
-      <div className="school-card__info">
-        <p className="school-card__name">{school_name}</p>
-        <p className="school-card__location">Located in: {city}</p>
-      </div>
-      <div className="school-card__stats">
-        <p className="school-card__grades">
-          <strong>Grades:</strong> {finalgrades}
-        </p>
-        <p className="school-card__students">
-          <strong>Students: </strong>
-          {total_students}
-        </p>
-      </div>
-      <button className="school-card__details-button" onClick={handleClick}>
-        See More Info
-      </button>
-    </div>
+    <Card
+      variant="outlined"
+      sx={{ borderRadius: 0, borderBottom: 0, maxWidth: 2000 }}
+      className="school-card"
+    >
+      <Box sx={{ p: 2 }}>
+        <Stack direction="column" alignItems="center">
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+            sx={{ fontWeight: 'bold' }}
+            component="div"
+          >
+            {school_name}
+          </Typography>
+          <Stack direction="row">
+            <Typography variant="subtitle2" component="div">
+              {`${city}, NY`}
+            </Typography>
+            <Typography variant="subtitle2" component="div">
+              {`Grades: ${grades}`}
+            </Typography>
+            <Typography variant="subtitle2" component="div">
+              {`Students: ${total_students}`}
+            </Typography>
+          </Stack>
+        </Stack>
+        <Button
+          size="small"
+          variant="text"
+          sx={{ marginLeft: 0, marginTop: 1 }}
+          onClick={handleClick}
+        >
+          See Details
+        </Button>
+      </Box>
+    </Card>
   );
 }

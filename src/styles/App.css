@@ -1,6 +1,8 @@
 .App {
-  text-align: center;
-  padding: 15px;
+  padding: 0;
+  /* margin-left: 250px;
+  margin-right: 50px; */
+  max-width: 100%;
 }
 
 .school_search_form {
@@ -16,19 +18,8 @@
 
 .schools-dashboard__dropdown-container {
   display: flex;
+  align-items: center;
   margin: 15px;
-}
-
-.schools-dashboard__dropdown-container button {
-  margin-right: 27px;
-  background-color: white;
-  border: 1px solid black;
-  padding: 7px;
-  border-radius: 6px;
-}
-
-.schools-dashboard__dropdown-container button:hover {
-  cursor: pointer;
 }
 
 .search-results-container {
@@ -73,38 +64,16 @@
 }
 
 .school-card {
-  padding: 12px;
-  margin: 15px;
-  height: 55px;
-  display: flex;
-  justify-content: space-between;
-  background-color: #f5f5f5;
+  height: 115px;
   align-items: center;
-  border-radius: 12px;
-  width: 40vw;
-}
-
-.school-card__name {
-  font-size: 15px;
-  font-weight: bold;
-  margin: 0px;
+  border-bottom: 1px solid lightgrey;
+  border-radius: none;
+  width: 100vw;
 }
 
 .school-card__location {
   font-size: 15px;
   margin: 0px;
-}
-
-.school-card__details-button {
-  background-color: lightgrey;
-  border: none;
-  width: 100px;
-  height: 40px;
-  border-radius: 10px;
-}
-
-.school-card__details-button:hover {
-  cursor: pointer;
 }
 
 .schools-container {
@@ -135,13 +104,10 @@
 
 .schools-dashboard__content-container__primary {
   display: flex;
-  flex-direction: row;
-  justify-items: space-between;
-  align-content: center;
 }
 
-.schools-dashboard__content-container__schools {
-  width: 10vw;
+.schools-dashboard__content-container__primary div {
+  width: 100%;
 }
 
 .schools-dashboard__view-options {
@@ -175,10 +141,7 @@
   display: flex;
   flex-direction: column;
   align-content: flext-start;
-  border: 1px solid black;
   padding: 15px;
-  border-radius: 12px;
-  margin: 15px;
 }
 
 .selected-school-container header,

@@ -25,8 +25,12 @@ export default function PaginationSelect() {
           label="page-size"
           onChange={handleChange}
         >
-          {pageSizes.map(size => {
-            return <MenuItem value={size}>{size}</MenuItem>;
+          {pageSizes.map((size, index) => {
+            return (
+              <MenuItem key={`size-${index}`} value={size}>
+                {size}
+              </MenuItem>
+            );
           })}
         </Select>
       </FormControl>
