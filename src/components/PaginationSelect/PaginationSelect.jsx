@@ -15,7 +15,7 @@ export default function PaginationSelect() {
   };
 
   return (
-    <Box sx={{ minWidth: 150 }}>
+    <Box sx={{ minWidth: 150, marginRight: 0 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">page size</InputLabel>
         <Select

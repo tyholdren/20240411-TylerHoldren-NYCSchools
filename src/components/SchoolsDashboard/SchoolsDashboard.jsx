@@ -4,6 +4,7 @@ import MultipleSelect from '../MultipleSelect/MultipleSelect';
 import { useState, useEffect } from 'react';
 import SelectedSchool from '../SelectedSchool/SelectedSchool';
 import PageHeader from '../PageHeader/PageHeader';
+import Box from '@mui/material/Box';
 
 import List from '@mui/material/List';
 
@@ -103,10 +104,11 @@ export default function SchoolsDashboard() {
         </Button>
       </Stack>
       <div className="schools-dashboard__content-container">
-        <div className="schools-dashboard__view-options">
+        <Stack direction="row">
           {VIEW_OPTIONS.map((view, index) => {
             return (
-              <div
+              <Box
+                sx={{ marginRight: 4, marginBottom: 0 }}
                 key={index}
                 onClick={() => handleViewSelection(index)}
                 className={
@@ -114,10 +116,10 @@ export default function SchoolsDashboard() {
                 }
               >
                 {view}
-              </div>
+              </Box>
             );
           })}
-        </div>
+        </Stack>
         <div>
           <Stack direction="row">
             <Stack direction="column">
@@ -125,52 +127,37 @@ export default function SchoolsDashboard() {
                 schools={currentSchools}
                 handleSelectedSchool={handleSelectedSchool}
               ></ScrollableList>
-              <div className="schools-dashboard__pagination-container">
+              <div>
                 <span>{`Results ${offset} - ${offset + 8}`}</span>
-                <div className="pagination-container-buttons">
-                  <Stack spacing={2} direction="row"></Stack>
+                <Stack direction="row" justifyContent="flex-end">
                   <Button
+                    sx={{ marginRight: 2 }}
                     variant="contained"
                     disabled={offset === 0}
                     onClick={handlePrevClick}
                   >
                     prev
                   </Button>
-                  <Button variant="contained" onClick={handleNextClick}>
+
+                  <Button
+                    sx={{ marginRight: 2 }}
+                    variant="contained"
+                    onClick={handleNextClick}
+                  >
                     next
                   </Button>
-
                   <PaginationSelect />
-                </div>
+                </Stack>
               </div>
             </Stack>
-            <div>
+            <Box>
               {selectedSchool.length > 0 && (
                 <SelectedSchool {...selectedSchool[0]} />
               )}
-            </div>
+            </Box>
           </Stack>
         </div>
       </div>
     </div>
   );
 }
-
-// <div className="schools-dashboard__pagination-container">
-// <span>{`Results ${offset} - ${offset + 8}`}</span>
-// <div className="pagination-container-buttons">
-//   <Stack spacing={2} direction="row"></Stack>
-//   <Button
-//     variant="contained"
-//     disabled={offset === 0}
-//     onClick={handlePrevClick}
-//   >
-//     prev
-//   </Button>
-//   <Button variant="contained" onClick={handleNextClick}>
-//     next
-//   </Button>
-
-//   <PaginationSelect />
-// </div>
-// </div>

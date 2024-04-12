@@ -17,11 +17,17 @@ export default function SchoolCard({
   return (
     <Card
       variant="outlined"
-      sx={{ borderRadius: 0, borderBottom: 0, maxWidth: '100%' }}
+      sx={{
+        borderRadius: 0,
+        borderBottom: 0,
+        maxWidth: '100%',
+        margin: 0,
+        fontSize: '15px',
+      }}
       className="school-card"
     >
       <Box sx={{ p: 2 }} direction="row" justiftyContent="left">
-        <Stack direction="column" alignItems="center">
+        <Stack direction="column" alignItems="left">
           <Typography
             gutterBottom
             variant="subtitle1"
@@ -30,7 +36,7 @@ export default function SchoolCard({
           >
             {school_name}
           </Typography>
-          <Stack direction="row">
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="subtitle2" component="div">
               {`${city}, NY`}
             </Typography>

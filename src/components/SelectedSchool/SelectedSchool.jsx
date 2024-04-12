@@ -31,7 +31,7 @@ export default function SelectedSchool({
 }) {
   const grey_300 = grey[300];
   const StyledTypography = styled(Typography)`
-    margin-right: 10em;
+    margin-right: 0.5em;
   `;
 
   const StyledTypographySubtitle = styled(Typography)`
@@ -73,7 +73,7 @@ export default function SelectedSchool({
     : UNDEFINED_MESSAGE;
 
   return (
-    <article className="selected-school-container">
+    <Box sx={{ padding: '15px' }}>
       <header className="school-header">
         <Typography variant="h5" className="selected-school__school-name">
           {school_name}
@@ -162,6 +162,6 @@ export default function SelectedSchool({
           {overview_paragraph || UNDEFINED_MESSAGE}
         </OverviewParagraph>
       </section>
-    </article>
+    </Box>
   );
 }
