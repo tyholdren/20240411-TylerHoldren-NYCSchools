@@ -38,8 +38,6 @@ export default function SchoolsDashboard() {
   }, [offset, selectedSchool]);
 
   useEffect(() => {
-    console.log('RESETTING');
-
     setSchoolsCache({});
     setCurrentSchools([]);
     setSelectedSchool([]);
