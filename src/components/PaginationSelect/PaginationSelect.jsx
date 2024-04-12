@@ -7,11 +7,14 @@ import Select from '@mui/material/Select';
 
 const pageSizes = [5, 10, 15, 20];
 
-export default function PaginationSelect() {
-  const [pageSize, setPageSize] = useState('');
+export default function PaginationSelect({ handleLimitChange }) {
+  const [pageSize, setPageSize] = useState(0);
 
   const handleChange = event => {
-    setPageSize(event.target.value);
+    const newLimit = event.target.value;
+
+    setPageSize(newLimit);
+    handleLimitChange(newLimit);
   };
 
   return (

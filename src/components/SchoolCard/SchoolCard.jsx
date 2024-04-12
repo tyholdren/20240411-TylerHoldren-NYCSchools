@@ -26,7 +26,7 @@ export default function SchoolCard({
       }}
       className="school-card"
     >
-      <Box sx={{ p: 2 }} direction="row" justiftyContent="left">
+      <Box sx={{ p: 2 }} direction="row">
         <Stack direction="column" alignItems="left">
           <Typography
             gutterBottom

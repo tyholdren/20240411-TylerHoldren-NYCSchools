@@ -1,6 +1,5 @@
 const URL_SCHOOLS = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
-const LIMIT = 8;
 
 export const fetchSchoolsAndScores = async ({
   cityFilter,
@@ -10,9 +9,12 @@ export const fetchSchoolsAndScores = async ({
   setSelectedSchool,
   schoolsCache,
   selectedSchool,
+  limit,
 }) => {
+  console.log('fetching data');
+
   // Construct the base URL with limit and offset
-  let baseURL = `${URL_SCHOOLS}?$limit=${LIMIT}&$offset=${offset}`;
+  let baseURL = `${URL_SCHOOLS}?$limit=${limit}&$offset=${offset}`;
 
   // Append the city filter if one is provided
   if (cityFilter) {

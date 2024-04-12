@@ -1,12 +1,9 @@
-import SchoolCard from '../SchoolCard/SchoolCard';
 import { fetchSchoolsAndScores } from '../../services/schoolService';
 import MultipleSelect from '../MultipleSelect/MultipleSelect';
 import { useState, useEffect } from 'react';
 import SelectedSchool from '../SelectedSchool/SelectedSchool';
 import PageHeader from '../PageHeader/PageHeader';
 import Box from '@mui/material/Box';
-
-import List from '@mui/material/List';
 
 import ScrollableList from '../ScrollableList/ScrollableList';
 
@@ -17,7 +14,6 @@ import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from '../../utils/constants';
 import PaginationSelect from '../PaginationSelect/PaginationSelect';
 
 let BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
-const LIMIT = 8;
 
 export default function SchoolsDashboard() {
   const [schoolsCache, setSchoolsCache] = useState({});
@@ -25,6 +21,7 @@ export default function SchoolsDashboard() {
   const [selectedSchool, setSelectedSchool] = useState([]);
   const [selectedView, setSelectedView] = useState(VIEW_OPTIONS[0]);
   const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(8);
 
   useEffect(() => {
     fetchSchoolsAndScores({
@@ -36,9 +33,37 @@ export default function SchoolsDashboard() {
       offset,
       selectedSchool,
       BASE_URL,
-      LIMIT,
+      limit,
     });
   }, [offset, selectedSchool]);
+
+  useEffect(() => {
+    console.log('RESETTING');
+
+    setSchoolsCache({});
+    setCurrentSchools([]);
+    setSelectedSchool([]);
+    setSelectedView(VIEW_OPTIONS[0]);
+    setOffset(0);
+
+    fetchSchoolsAndScores({
+      cityFilter: null,
+      setSchoolsCache,
+      setCurrentSchools,
+      setSelectedSchool,
+      schoolsCache,
+      offset,
+      selectedSchool,
+      BASE_URL,
+      limit,
+    });
+  }, [limit]);
+
+  console.log({ currentSchools });
+
+  const handleLimitChange = number => {
+    setLimit(number);
+  };
 
   const handleSelectedSchool = (index, selectedSchool) => {
     if (index === null) {
@@ -56,11 +81,11 @@ export default function SchoolsDashboard() {
   };
 
   const handlePrevClick = () => {
-    setOffset(Math.max(0, offset - LIMIT));
+    setOffset(Math.max(0, offset - limit));
   };
 
   const handleNextClick = () => {
-    setOffset(offset + LIMIT);
+    setOffset(offset + limit);
   };
 
   const handleCityFilterChange = cityFilter => {
@@ -128,7 +153,7 @@ export default function SchoolsDashboard() {
                 handleSelectedSchool={handleSelectedSchool}
               ></ScrollableList>
               <div>
-                <span>{`Results ${offset} - ${offset + 8}`}</span>
+                <span>{`Results ${offset} - ${offset + limit}`}</span>
                 <Stack direction="row" justifyContent="flex-end">
                   <Button
                     sx={{ marginRight: 2 }}
@@ -146,7 +171,7 @@ export default function SchoolsDashboard() {
                   >
                     next
                   </Button>
-                  <PaginationSelect />
+                  <PaginationSelect handleLimitChange={handleLimitChange} />
                 </Stack>
               </div>
             </Stack>
