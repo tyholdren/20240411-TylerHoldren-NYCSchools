@@ -3,6 +3,7 @@ const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
 
 export const fetchSchoolsAndScores = async ({
   cityFilter,
+  studentFilter,
   offset,
   setSchoolsCache,
   setCurrentSchools,
@@ -11,14 +12,26 @@ export const fetchSchoolsAndScores = async ({
   selectedSchool,
   limit,
 }) => {
+  console.log({ studentFilter });
   let baseURL = `${URL_SCHOOLS}?$limit=${limit}&$offset=${offset}`;
+
+  // Initialize an array to hold query conditions
+  let queryCondition = '';
 
   // Append the city filter if one is provided
   if (cityFilter) {
-    baseURL += `&city=${encodeURIComponent(cityFilter)}`;
+    queryCondition = `city='${encodeURIComponent(cityFilter)}'`;
+  } else if (studentFilter) {
+    const [minStudents, maxStudents] = studentFilter;
+    queryCondition = `total_students between ${minStudents} and ${maxStudents}`;
   }
 
-  if (schoolsCache[offset] && !cityFilter) {
+  // If there are any query conditions, append them to the base URL
+  if (queryCondition) {
+    baseURL += `&$where=${queryCondition}`;
+  }
+
+  if (schoolsCache[offset] && !cityFilter && !studentFilter) {
     setCurrentSchools(schoolsCache[offset]);
     if (selectedSchool !== undefined && selectedSchool.length === 0) {
       setSelectedSchool([schoolsCache[offset][0]]);

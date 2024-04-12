@@ -38,6 +38,7 @@ export default function SchoolsDashboard() {
   useEffect(() => {
     fetchSchoolsAndScores({
       cityFilter: null,
+      studentFilter: null,
       setSchoolsCache,
       setCurrentSchools,
       setSelectedSchool,
@@ -75,6 +76,7 @@ export default function SchoolsDashboard() {
 
     fetchSchoolsAndScores({
       cityFilter: null,
+      studentFilter: null,
       setSchoolsCache,
       setCurrentSchools,
       setSelectedSchool,
@@ -125,6 +127,41 @@ export default function SchoolsDashboard() {
   const handleCityFilterChange = cityFilter => {
     fetchSchoolsAndScores({
       cityFilter,
+      studentFilter: null,
+      offset,
+      setSchoolsCache,
+      setCurrentSchools,
+      setSelectedSchool,
+      schoolsCache,
+      selectedSchool,
+      limit,
+    });
+  };
+
+  const handleStudentFilterChange = selectedRange => {
+    console.log({ selectedRange });
+    let lowValue, highValue;
+
+    // If the selected range is '500+', set lowValue to 500 and highValue to an arbitrary large number
+    if (selectedRange === '500+') {
+      lowValue = 500;
+      highValue = 999999; // or some other large number that makes sense for your dataset
+    } else {
+      // For other ranges, split the string by hyphen to get low and high values
+      [lowValue, highValue] = selectedRange.split('-').map(Number);
+    }
+
+    console.log(highValue, lowValue);
+
+    // Update the filter with the new student count range
+    setFilters(previousFilters => ({
+      ...previousFilters,
+      studentFilter: [lowValue, highValue],
+    }));
+
+    fetchSchoolsAndScores({
+      cityFilter: null,
+      studentFilter: [lowValue, highValue],
       offset,
       setSchoolsCache,
       setCurrentSchools,
@@ -157,9 +194,9 @@ export default function SchoolsDashboard() {
           filters={filters}
           updateSelectedFilters={setFilters}
           updateView={() =>
-            setSelectedView(VIEW_OPTIONS.mySavedSchools.filterName)
+            setSelectedView(VIEW_OPTIONS.filteredSchools.filterName)
           }
-          fetchFilteredResults={handleCityFilterChange}
+          fetchFilteredResults={handleStudentFilterChange}
         />
         <Button
           variant="contained"
