@@ -17,10 +17,10 @@ export default function SchoolCard({
   return (
     <Card
       variant="outlined"
-      sx={{ borderRadius: 0, borderBottom: 0, maxWidth: 2000 }}
+      sx={{ borderRadius: 0, borderBottom: 0, maxWidth: '100%' }}
       className="school-card"
     >
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: 2 }} direction="row" justiftyContent="left">
         <Stack direction="column" alignItems="center">
           <Typography
             gutterBottom

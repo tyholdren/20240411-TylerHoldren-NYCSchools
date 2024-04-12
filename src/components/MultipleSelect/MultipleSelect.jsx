@@ -40,15 +40,35 @@ export default function MultipleSelect({
   }, [selectedFilter]);
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 200 }}>
-        <InputLabel id="demo-multiple-name-label">{buttonValue}</InputLabel>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'flex-end',
+        marginTop: '8px',
+        marginBottom: '8px',
+      }}
+    >
+      <FormControl sx={{ marginRight: 5, minWidth: 200 }}>
+        <InputLabel shrink={selectedFilter.length > 0}>
+          {buttonValue}
+        </InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           value={selectedFilter}
           onChange={handleFilterChange}
-          input={<OutlinedInput label="Name" />}
+          input={
+            <OutlinedInput
+              // sx={{
+              //   '& .MuiOutlinedInput-input': {
+              //     margin: '0px',
+              //     paddingTop: '7px',
+              //     paddingBottom: '7px',
+              //   },
+              // }}
+              label={buttonValue}
+            />
+          }
           MenuProps={MenuProps}
         >
           {filterValue.map(filter => {

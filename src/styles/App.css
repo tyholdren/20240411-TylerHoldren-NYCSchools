@@ -19,7 +19,6 @@
 .schools-dashboard__dropdown-container {
   display: flex;
   align-items: center;
-  margin: 15px;
 }
 
 .search-results-container {
@@ -100,14 +99,6 @@
 .schools-dashboard__content-container {
   display: flex;
   flex-direction: column;
-}
-
-.schools-dashboard__content-container__primary {
-  display: flex;
-}
-
-.schools-dashboard__content-container__primary div {
-  width: 100%;
 }
 
 .schools-dashboard__view-options {

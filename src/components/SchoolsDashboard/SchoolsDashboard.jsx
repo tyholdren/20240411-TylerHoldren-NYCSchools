@@ -77,7 +77,7 @@ export default function SchoolsDashboard() {
   return (
     <div className="schools-dashboard">
       <PageHeader selectSchool={handleSelectedSchool} />
-      <div className="schools-dashboard__dropdown-container">
+      <Stack direction="row" sx={{ marginTop: '15px', marginBottom: '15px' }}>
         <MultipleSelect
           buttonValue="cities"
           filterValue={CITIES}
@@ -91,14 +91,17 @@ export default function SchoolsDashboard() {
           fetchFilteredResults={handleCityFilterChange}
         />
         <Button
-          sx={{ maxHeight: 100 }}
           variant="contained"
+          sx={{
+            height: '40px',
+            minHeight: '40px',
+            alignSelf: 'center',
+          }}
           onClick={() => setSelectedView(VIEW_OPTIONS[0])}
         >
           clear filters
         </Button>
-      </div>
-
+      </Stack>
       <div className="schools-dashboard__content-container">
         <div className="schools-dashboard__view-options">
           {VIEW_OPTIONS.map((view, index) => {
@@ -115,37 +118,59 @@ export default function SchoolsDashboard() {
             );
           })}
         </div>
-        <div className="schools-dashboard__content-container__primary">
-          <ScrollableList
-            schools={currentSchools}
-            handleSelectedSchool={handleSelectedSchool}
-          ></ScrollableList>
+        <div>
+          <Stack direction="row">
+            <Stack direction="column">
+              <ScrollableList
+                schools={currentSchools}
+                handleSelectedSchool={handleSelectedSchool}
+              ></ScrollableList>
+              <div className="schools-dashboard__pagination-container">
+                <span>{`Results ${offset} - ${offset + 8}`}</span>
+                <div className="pagination-container-buttons">
+                  <Stack spacing={2} direction="row"></Stack>
+                  <Button
+                    variant="contained"
+                    disabled={offset === 0}
+                    onClick={handlePrevClick}
+                  >
+                    prev
+                  </Button>
+                  <Button variant="contained" onClick={handleNextClick}>
+                    next
+                  </Button>
 
-          <div>
-            {selectedSchool.length > 0 && (
-              <SelectedSchool {...selectedSchool[0]} />
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="schools-dashboard__pagination-container">
-        <span>{`Results ${offset} - ${offset + 8}`}</span>
-        <div className="pagination-container-buttons">
-          <Stack spacing={2} direction="row"></Stack>
-          <Button
-            variant="contained"
-            disabled={offset === 0}
-            onClick={handlePrevClick}
-          >
-            prev
-          </Button>
-          <Button variant="contained" onClick={handleNextClick}>
-            next
-          </Button>
-
-          <PaginationSelect />
+                  <PaginationSelect />
+                </div>
+              </div>
+            </Stack>
+            <div>
+              {selectedSchool.length > 0 && (
+                <SelectedSchool {...selectedSchool[0]} />
+              )}
+            </div>
+          </Stack>
         </div>
       </div>
     </div>
   );
 }
+
+// <div className="schools-dashboard__pagination-container">
+// <span>{`Results ${offset} - ${offset + 8}`}</span>
+// <div className="pagination-container-buttons">
+//   <Stack spacing={2} direction="row"></Stack>
+//   <Button
+//     variant="contained"
+//     disabled={offset === 0}
+//     onClick={handlePrevClick}
+//   >
+//     prev
+//   </Button>
+//   <Button variant="contained" onClick={handleNextClick}>
+//     next
+//   </Button>
+
+//   <PaginationSelect />
+// </div>
+// </div>
