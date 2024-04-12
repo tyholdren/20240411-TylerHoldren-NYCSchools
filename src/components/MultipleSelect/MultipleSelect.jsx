@@ -48,7 +48,6 @@ export default function MultipleSelect({
 
   useEffect(() => {
     if (clearFilter) {
-      console.log('inside clearing filter multiple select');
       setSelectedFilter('');
       updateView();
     }

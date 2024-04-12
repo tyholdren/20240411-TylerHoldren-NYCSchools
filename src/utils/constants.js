@@ -37,13 +37,13 @@ export const TOTAL_STUDENTS = [
   '500+',
 ];
 
-export const VIEW_OPTIONS = [
+export const VIEW_OPTIONS_2 = [
   'All schools',
   'Filtered schools',
   'My saved schools',
 ];
 
-export const VIEW_OPTIONS_2 = {
+export const VIEW_OPTIONS = {
   allSchools: { filterName: 'All schools', errorMessage: null },
   filteredSchools: {
     filterName: 'Filtered schools',
