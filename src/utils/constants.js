@@ -56,3 +56,5 @@ export const VIEW_OPTIONS = {
       "You haven't saved any schools yet. Please save schools to enable view.",
   },
 };
+
+export const PAGE_SIZES = [5, 10, 15, 20];

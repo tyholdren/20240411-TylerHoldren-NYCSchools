@@ -4,8 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-const pageSizes = [5, 10, 15, 20];
+import { PAGE_SIZES } from '../../utils/constants';
 
 export default function PaginationSelect({ handleLimitChange }) {
   const [pageSize, setPageSize] = useState(0);
@@ -28,7 +27,7 @@ export default function PaginationSelect({ handleLimitChange }) {
           label="page-size"
           onChange={handleChange}
         >
-          {pageSizes.map((size, index) => {
+          {PAGE_SIZES.map((size, index) => {
             return (
               <MenuItem key={`size-${index}`} value={size}>
                 {size}

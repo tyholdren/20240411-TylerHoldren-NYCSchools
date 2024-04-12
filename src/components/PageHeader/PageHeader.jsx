@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -15,9 +15,16 @@ export default function PageHeader({ selectSchool }) {
     try {
       const response = await fetch(fetchURL);
       const results = await response.json();
-      setOptions(results);
+      // Ensure that results is an array before setting it to options
+      if (Array.isArray(results)) {
+        setOptions(results);
+      } else {
+        console.error('Expected an array of results but received:', results);
+        setOptions([]); // Reset options to an empty array to avoid errors
+      }
     } catch (error) {
       console.error(`Search input error: ${error}`);
+      setOptions([]); // Reset options to an empty array in case of fetch errors
     }
   };
 

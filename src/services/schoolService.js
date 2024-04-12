@@ -12,7 +12,6 @@ export const fetchSchoolsAndScores = async ({
   selectedSchool,
   limit,
 }) => {
-  console.log({ studentFilter });
   let baseURL = `${URL_SCHOOLS}?$limit=${limit}&$offset=${offset}`;
 
   // Initialize an array to hold query conditions

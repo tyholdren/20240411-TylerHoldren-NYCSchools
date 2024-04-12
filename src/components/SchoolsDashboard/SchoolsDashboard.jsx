@@ -139,7 +139,6 @@ export default function SchoolsDashboard() {
   };
 
   const handleStudentFilterChange = selectedRange => {
-    console.log({ selectedRange });
     let lowValue, highValue;
 
     // If the selected range is '500+', set lowValue to 500 and highValue to an arbitrary large number
@@ -150,8 +149,6 @@ export default function SchoolsDashboard() {
       // For other ranges, split the string by hyphen to get low and high values
       [lowValue, highValue] = selectedRange.split('-').map(Number);
     }
-
-    console.log(highValue, lowValue);
 
     // Update the filter with the new student count range
     setFilters(previousFilters => ({
