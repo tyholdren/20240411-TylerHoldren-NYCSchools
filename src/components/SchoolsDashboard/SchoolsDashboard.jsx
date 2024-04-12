@@ -1,25 +1,40 @@
-import { fetchSchoolsAndScores } from '../../services/schoolService';
-import MultipleSelect from '../MultipleSelect/MultipleSelect';
 import { useState, useEffect } from 'react';
+import { fetchSchoolsAndScores } from '../../services/schoolService';
+import TooltipWrapper from '../TooltipWrapper/TooltipWrapper';
+import MultipleSelect from '../MultipleSelect/MultipleSelect';
 import SelectedSchool from '../SelectedSchool/SelectedSchool';
 import PageHeader from '../PageHeader/PageHeader';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import ScrollableList from '../ScrollableList/ScrollableList';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
-import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from '../../utils/constants';
+import {
+  CITIES,
+  TOTAL_STUDENTS,
+  VIEW_OPTIONS,
+  VIEW_OPTIONS_2,
+} from '../../utils/constants';
 import PaginationSelect from '../PaginationSelect/PaginationSelect';
 
 let BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 
 export default function SchoolsDashboard() {
+  const DEFAULT_VIEW = VIEW_OPTIONS_2.allSchools.filterName;
+
   const [schoolsCache, setSchoolsCache] = useState({});
   const [currentSchools, setCurrentSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState([]);
-  const [selectedView, setSelectedView] = useState(VIEW_OPTIONS[0]);
+  const [selectedView, setSelectedView] = useState(DEFAULT_VIEW);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [filters, setFilters] = useState({
+    cities: null,
+    studentFilter: null,
+  });
+
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(8);
 
@@ -41,7 +56,7 @@ export default function SchoolsDashboard() {
     setSchoolsCache({});
     setCurrentSchools([]);
     setSelectedSchool([]);
-    setSelectedView(VIEW_OPTIONS[0]);
+    setSelectedView(DEFAULT_VIEW);
     setOffset(0);
 
     fetchSchoolsAndScores({
@@ -56,8 +71,6 @@ export default function SchoolsDashboard() {
       limit,
     });
   }, [limit]);
-
-  console.log({ currentSchools });
 
   const handleLimitChange = number => {
     setLimit(number);
@@ -74,8 +87,17 @@ export default function SchoolsDashboard() {
     }
   };
 
-  const handleViewSelection = index => {
-    setSelectedView(VIEW_OPTIONS[index]);
+  const handleViewSelection = (index, filters) => {
+    if (index !== 0 && filters.cities === null) {
+      setShowTooltip(true);
+      setTimeout(() => setShowTooltip(false), 3000);
+      return;
+    }
+    const viewOptionsName = Object.values(VIEW_OPTIONS_2).map(
+      value => value.filterName
+    );
+
+    setSelectedView(viewOptionsName[index]);
   };
 
   const handlePrevClick = () => {
@@ -95,6 +117,7 @@ export default function SchoolsDashboard() {
       setSelectedSchool,
       schoolsCache,
       selectedSchool,
+      limit,
     });
   };
 
@@ -105,13 +128,21 @@ export default function SchoolsDashboard() {
         <MultipleSelect
           buttonValue="cities"
           filterValue={CITIES}
-          updateView={() => setSelectedView(VIEW_OPTIONS[1])}
+          filters={filters}
+          updateSelectedFilters={setFilters}
+          updateView={() =>
+            setSelectedView(VIEW_OPTIONS_2.allSchools.filterName)
+          }
           fetchFilteredResults={handleCityFilterChange}
         />
         <MultipleSelect
           buttonValue="students"
           filterValue={TOTAL_STUDENTS}
-          updateView={() => setSelectedView(VIEW_OPTIONS[1])}
+          filters={filters}
+          updateSelectedFilters={setFilters}
+          updateView={() =>
+            setSelectedView(VIEW_OPTIONS_2.allSchools.filterName)
+          }
           fetchFilteredResults={handleCityFilterChange}
         />
         <Button
@@ -121,27 +152,36 @@ export default function SchoolsDashboard() {
             minHeight: '40px',
             alignSelf: 'center',
           }}
-          onClick={() => setSelectedView(VIEW_OPTIONS[0])}
+          onClick={() => setSelectedView(DEFAULT_VIEW)}
         >
           clear filters
         </Button>
       </Stack>
       <div className="schools-dashboard__content-container">
         <Stack direction="row">
-          {VIEW_OPTIONS.map((view, index) => {
-            return (
+          {VIEW_OPTIONS.map((view, index) => (
+            <TooltipWrapper
+              key={index}
+              message="Please select a city filter first"
+              open={showTooltip && index !== 0 && filters.cities === null}
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+              arrow
+            >
               <Box
                 sx={{ marginRight: 4, marginBottom: 0 }}
-                key={index}
-                onClick={() => handleViewSelection(index)}
+                onClick={() => handleViewSelection(index, filters)}
                 className={
                   selectedView === view ? 'active-view' : 'non-active-view'
                 }
               >
-                {view}
+                <Typography variant="subtitle1" component="span">
+                  {view}
+                </Typography>
               </Box>
-            );
-          })}
+            </TooltipWrapper>
+          ))}
         </Stack>
         <div>
           <Stack direction="row">

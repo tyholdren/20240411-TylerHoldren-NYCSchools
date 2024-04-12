@@ -23,12 +23,18 @@ export default function MultipleSelect({
   filterValue,
   updateView,
   fetchFilteredResults,
+  updateSelectedFilters,
+  filters,
 }) {
   const [selectedFilter, setSelectedFilter] = useState('');
 
   const handleFilterChange = event => {
-    setSelectedFilter(event.target.value);
+    const newFilterSelection = event.target.value;
+    setSelectedFilter(newFilterSelection);
     updateView();
+
+    const newFilter = { ...filters, [buttonValue]: !!newFilterSelection };
+    updateSelectedFilters(newFilter);
   };
 
   useEffect(() => {
@@ -57,18 +63,7 @@ export default function MultipleSelect({
           id="demo-multiple-name"
           value={selectedFilter}
           onChange={handleFilterChange}
-          input={
-            <OutlinedInput
-              // sx={{
-              //   '& .MuiOutlinedInput-input': {
-              //     margin: '0px',
-              //     paddingTop: '7px',
-              //     paddingBottom: '7px',
-              //   },
-              // }}
-              label={buttonValue}
-            />
-          }
+          input={<OutlinedInput label={buttonValue} />}
           MenuProps={MenuProps}
         >
           {filterValue.map(filter => {

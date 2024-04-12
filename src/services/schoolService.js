@@ -11,9 +11,6 @@ export const fetchSchoolsAndScores = async ({
   selectedSchool,
   limit,
 }) => {
-  console.log('fetching data');
-
-  // Construct the base URL with limit and offset
   let baseURL = `${URL_SCHOOLS}?$limit=${limit}&$offset=${offset}`;
 
   // Append the city filter if one is provided

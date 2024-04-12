@@ -42,3 +42,17 @@ export const VIEW_OPTIONS = [
   'Filtered schools',
   'My saved schools',
 ];
+
+export const VIEW_OPTIONS_2 = {
+  allSchools: { filterName: 'All schools', errorMessage: null },
+  filteredSchools: {
+    filterName: 'Filtered schools',
+    errorMessage:
+      "You haven't selected any filters. Please select a filter to enable view.",
+  },
+  mySavedSchools: {
+    filterName: 'My saved schools',
+    errorMessage:
+      "You haven't saved any schools yet. Please save schools to enable view.",
+  },
+};
