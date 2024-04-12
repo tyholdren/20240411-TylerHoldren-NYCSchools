@@ -25,6 +25,7 @@ export default function MultipleSelect({
   fetchFilteredResults,
   updateSelectedFilters,
   filters,
+  clearFilter,
 }) {
   const [selectedFilter, setSelectedFilter] = useState('');
 
@@ -44,6 +45,14 @@ export default function MultipleSelect({
       console.error('Error fetching data:', error);
     }
   }, [selectedFilter]);
+
+  useEffect(() => {
+    if (clearFilter) {
+      console.log('inside clearing filter multiple select');
+      setSelectedFilter('');
+      updateView();
+    }
+  }, [clearFilter]);
 
   return (
     <div

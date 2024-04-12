@@ -30,6 +30,7 @@ export default function SchoolsDashboard() {
   const [selectedSchool, setSelectedSchool] = useState([]);
   const [selectedView, setSelectedView] = useState(DEFAULT_VIEW);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [shouldClearFilter, setShouldClearFilter] = useState(false);
   const [filters, setFilters] = useState({
     cities: null,
     studentFilter: null,
@@ -53,6 +54,18 @@ export default function SchoolsDashboard() {
   }, [offset, selectedSchool]);
 
   useEffect(() => {
+    let timer;
+    if (shouldClearFilter) {
+      timer = setTimeout(() => {
+        setShouldClearFilter(false);
+      }, 3000);
+    }
+
+    // Clear timeout if the component is unmounted or the value of `shouldClearFilter` changes
+    return () => clearTimeout(timer);
+  }, [shouldClearFilter]);
+
+  useEffect(() => {
     setSchoolsCache({});
     setCurrentSchools([]);
     setSelectedSchool([]);
@@ -70,7 +83,7 @@ export default function SchoolsDashboard() {
       BASE_URL,
       limit,
     });
-  }, [limit]);
+  }, [limit, shouldClearFilter]);
 
   const handleLimitChange = number => {
     setLimit(number);
@@ -128,20 +141,22 @@ export default function SchoolsDashboard() {
         <MultipleSelect
           buttonValue="cities"
           filterValue={CITIES}
+          clearFilter={shouldClearFilter}
           filters={filters}
           updateSelectedFilters={setFilters}
-          updateView={() =>
-            setSelectedView(VIEW_OPTIONS_2.allSchools.filterName)
-          }
+          updateView={() => {
+            setSelectedView(VIEW_OPTIONS_2.filteredSchools.filterName);
+          }}
           fetchFilteredResults={handleCityFilterChange}
         />
         <MultipleSelect
           buttonValue="students"
           filterValue={TOTAL_STUDENTS}
+          clearFilter={shouldClearFilter}
           filters={filters}
           updateSelectedFilters={setFilters}
           updateView={() =>
-            setSelectedView(VIEW_OPTIONS_2.allSchools.filterName)
+            setSelectedView(VIEW_OPTIONS_2.mySavedSchools.filterName)
           }
           fetchFilteredResults={handleCityFilterChange}
         />
@@ -152,7 +167,9 @@ export default function SchoolsDashboard() {
             minHeight: '40px',
             alignSelf: 'center',
           }}
-          onClick={() => setSelectedView(DEFAULT_VIEW)}
+          onClick={() => {
+            setShouldClearFilter(true);
+          }}
         >
           clear filters
         </Button>
