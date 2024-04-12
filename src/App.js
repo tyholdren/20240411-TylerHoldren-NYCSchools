@@ -5,7 +5,7 @@ import './styles/App.css';
 function App() {
   return (
     <Container className="App">
-      <h3>Find Your Best NY School</h3>
+      <h3>Search for NYC Schools</h3>
       <SchoolsDashboard />
     </Container>
   );

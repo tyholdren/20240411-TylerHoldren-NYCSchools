@@ -1,6 +1,4 @@
-// NOTE: Storing API URLs in static variables as they are constant and unchanging, which is a good practice for configuration.
-const URL_SCHOOLS = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
-const URL_SCORES = 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=';
+import { URLS } from '../utils/constants';
 
 export const fetchSchoolsAndScores = async ({
   cityFilter,
@@ -14,7 +12,7 @@ export const fetchSchoolsAndScores = async ({
   limit,
 }) => {
   // NOTE: Constructing the base URL using limit and offset allows for efficient pagination without over-fetching.
-  let baseURL = `${URL_SCHOOLS}?$limit=${limit}&$offset=${offset}`;
+  let baseURL = `${URLS.base}?$limit=${limit}&$offset=${offset}`;
 
   // Initialize an array to hold query conditions
   let queryCondition = '';
@@ -56,7 +54,7 @@ export const fetchSchoolsAndScores = async ({
       */
       const schoolsWithScores = await Promise.all(
         schoolsData.map(async school => {
-          const scoresResponse = await fetch(`${URL_SCORES}${school.dbn}`);
+          const scoresResponse = await fetch(`${URLS.scores}${school.dbn}`);
           const scoresData = await scoresResponse.json();
           return {
             ...school,

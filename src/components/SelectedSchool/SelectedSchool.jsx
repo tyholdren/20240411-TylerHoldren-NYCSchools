@@ -1,10 +1,13 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { grey } from '@mui/material/colors';
 
+/*
+NOTE: We use styled-components to encapsulate styles within the component, 
+reducing the need for a larger global CSS file and avoiding style conflicts.
+*/
 export default function SelectedSchool({
   school_name,
   zip,
@@ -26,10 +29,19 @@ export default function SelectedSchool({
   scores,
 }) {
   const grey_300 = grey[300];
+
+  /*
+  NOTE: Defining styled components with descriptive variable names 
+  for readability and reusability within this module.
+  */
   const StyledTypography = styled(Typography)`
     margin-right: 0.5em;
   `;
 
+  /*
+  NOTE: Creating a styled component for subtitles with a consistent style 
+  ensures visual coherence and simplifies adjustments to the theme.
+  */
   const StyledTypographySubtitle = styled(Typography)`
     font-weight: bold;
     border-bottom: 1px solid ${grey_300};
@@ -58,6 +70,10 @@ export default function SelectedSchool({
     margin-top: 1em;
   `;
 
+  /*
+  NOTE: UNDEFINED_MESSAGE is used to present a default message 
+  when data is not available, ensuring that the UI is never empty.
+  */
   const UNDEFINED_MESSAGE = 'N/A';
 
   const newLocation = location

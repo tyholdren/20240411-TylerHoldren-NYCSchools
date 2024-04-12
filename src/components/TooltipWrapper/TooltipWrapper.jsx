@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 export default function TooltipWrapper({ message, children, open }) {
-  const [arrowRef, setArrowRef] = React.useState(null);
+  const [arrowRef, setArrowRef] = useState(null);
 
   const styledMessage = (
     <Box direction="row" alignItems="center">

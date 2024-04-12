@@ -15,10 +15,15 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
 // NOTE: Importing constants from a utilities file keeps static content centralized and easy to manage.
-import { CITIES, TOTAL_STUDENTS, VIEW_OPTIONS } from '../../utils/constants';
+import {
+  CITIES,
+  TOTAL_STUDENTS,
+  VIEW_OPTIONS,
+  ERROR_MESSAGES,
+  URLS,
+} from '../../utils/constants';
 import PaginationSelect from '../PaginationSelect/PaginationSelect';
 
-let BASE_URL = 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json';
 const DEFAULT_FILTERS = {
   cities: null,
   studentFilter: null,
@@ -58,7 +63,7 @@ export default function SchoolsDashboard() {
       schoolsCache,
       offset,
       selectedSchool,
-      BASE_URL,
+      baseURL: URLS.base,
       limit,
     });
   }, [offset, selectedSchool]);
@@ -99,7 +104,7 @@ export default function SchoolsDashboard() {
       schoolsCache,
       offset,
       selectedSchool,
-      BASE_URL,
+      baseURL: URLS.base,
       limit,
     });
   };
@@ -230,7 +235,16 @@ export default function SchoolsDashboard() {
             return (
               <TooltipWrapper
                 key={index}
-                message="Please select a city filter first"
+                message={
+                  index === 1
+                    ? ERROR_MESSAGES.filteredError
+                    : ERROR_MESSAGES.savedSchoolsError
+                }
+                /*
+                NOTE: if we had more time, we could make more descriptive error messages and handle 
+                them gracefully, at the moment error states are not persisting throughout app lifecycle, 
+                with more time we would make this behavior consistent throughout entire session
+                */
                 open={showTooltip && index !== 0 && filters.cities === null}
                 disableFocusListener
                 disableHoverListener

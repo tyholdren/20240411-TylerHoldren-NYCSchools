@@ -57,4 +57,14 @@ export const VIEW_OPTIONS = {
   },
 };
 
+export const ERROR_MESSAGES = {
+  filteredError: 'Please select a filter first',
+  savedSchoolsError: 'Saved searches ability is coming soon!',
+};
+
+export const URLS = {
+  base: 'https://data.cityofnewyork.us/resource/s3k6-pzi2.json',
+  scores: 'https://data.cityofnewyork.us/resource/f9bf-2cp4.json?dbn=',
+};
+
 export const PAGE_SIZES = [5, 10, 15, 20];
