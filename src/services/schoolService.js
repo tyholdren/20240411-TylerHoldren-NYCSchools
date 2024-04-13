@@ -11,6 +11,17 @@ export const fetchSchoolsAndScores = async ({
   selectedSchool,
   limit,
 }) => {
+  console.log({
+    cityFilter,
+    studentFilter,
+    offset,
+    setSchoolsCache,
+    setCurrentSchools,
+    setSelectedSchool,
+    schoolsCache,
+    selectedSchool,
+    limit,
+  });
   // NOTE: Constructing the base URL using limit and offset allows for efficient pagination without over-fetching.
   let baseURL = `${URLS.base}?$limit=${limit}&$offset=${offset}`;
 
@@ -22,8 +33,10 @@ export const fetchSchoolsAndScores = async ({
   In the future, combining both filters could provide more precise results.
   */
   if (cityFilter) {
+    console.log(' WE STILL HAVE A CITY FILTER');
     queryCondition = `city='${encodeURIComponent(cityFilter)}'`;
   } else if (studentFilter) {
+    console.log('STUDENT FILTER IS BEING TRIGGERED');
     const [minStudents, maxStudents] = studentFilter;
     queryCondition = `total_students between ${minStudents} and ${maxStudents}`;
   }
@@ -32,7 +45,7 @@ export const fetchSchoolsAndScores = async ({
   if (queryCondition) {
     baseURL += `&$where=${queryCondition}`;
   }
-
+  console.log({ baseURL });
   /*
   NOTE: Utilizing a cache to avoid redundant API calls for previously fetched data, 
   which improves performance and reduces unnecessary network traffic.

@@ -21,17 +21,12 @@ import {
   VIEW_OPTIONS,
   ERROR_MESSAGES,
   URLS,
+  DEFAULT_FILTERS,
+  DEFAULT_VIEW,
 } from '../../utils/constants';
 import PaginationSelect from '../PaginationSelect/PaginationSelect';
 
-const DEFAULT_FILTERS = {
-  cities: null,
-  studentFilter: null,
-};
-
 export default function SchoolsDashboard() {
-  const DEFAULT_VIEW = VIEW_OPTIONS.allSchools.filterName;
-
   /*
    NOTE: We leverage the cache for data persistence to avoid 
   redundant API calls, thus optimizing performance and reducing data fetch time.
@@ -43,28 +38,35 @@ export default function SchoolsDashboard() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [shouldClearFilter, setShouldClearFilter] = useState(false);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(8);
+
+  const defaultFetchArgs = {
+    cityFilter: filters.cities,
+    studentFilter: filters.studentFilter,
+    setSchoolsCache,
+    setCurrentSchools,
+    setSelectedSchool,
+    schoolsCache,
+    offset,
+    selectedSchool,
+    baseURL: URLS.base,
+    limit,
+  };
   /*
   NOTE: Using pagination with a limit and offset reduces the number of items fetched at a time,
   minimizing API load and improving application performance.
   */
-  const [offset, setOffset] = useState(0);
-  const [limit, setLimit] = useState(8);
+
   /*
    NOTE: SQL queries within fetchSchoolsAndScores are constructed to request specific ranges of
    data (using limit and offset), resulting in faster query execution and lower memory consumption.
   */
   useEffect(() => {
     fetchSchoolsAndScores({
-      cityFilter: null,
-      studentFilter: null,
-      setSchoolsCache,
-      setCurrentSchools,
-      setSelectedSchool,
-      schoolsCache,
-      offset,
-      selectedSchool,
-      baseURL: URLS.base,
-      limit,
+      ...defaultFetchArgs,
+      cityFilter: filters.cities,
+      studentFilter: filters.studentFilter,
     });
   }, [offset, selectedSchool]);
 
@@ -95,18 +97,7 @@ export default function SchoolsDashboard() {
     setOffset(0);
     setFilters(DEFAULT_FILTERS);
 
-    fetchSchoolsAndScores({
-      cityFilter: null,
-      studentFilter: null,
-      setSchoolsCache,
-      setCurrentSchools,
-      setSelectedSchool,
-      schoolsCache,
-      offset,
-      selectedSchool,
-      baseURL: URLS.base,
-      limit,
-    });
+    fetchSchoolsAndScores(defaultFetchArgs);
   };
 
   const handleLimitChange = number => {
@@ -130,6 +121,7 @@ export default function SchoolsDashboard() {
       setTimeout(() => setShowTooltip(false), 3000);
       return;
     }
+
     const viewOptionsName = Object.values(VIEW_OPTIONS).map(
       value => value.filterName
     );
@@ -141,22 +133,14 @@ export default function SchoolsDashboard() {
     setOffset(Math.max(0, offset - limit));
   };
 
+  useEffect(() => {}, [filters]);
+
   const handleNextClick = () => {
     setOffset(offset + limit);
   };
 
   const handleCityFilterChange = cityFilter => {
-    fetchSchoolsAndScores({
-      cityFilter,
-      studentFilter: null,
-      offset,
-      setSchoolsCache,
-      setCurrentSchools,
-      setSelectedSchool,
-      schoolsCache,
-      selectedSchool,
-      limit,
-    });
+    fetchSchoolsAndScores({ ...defaultFetchArgs, cityFilter: cityFilter });
   };
 
   const handleStudentFilterChange = selectedRange => {
@@ -175,17 +159,10 @@ export default function SchoolsDashboard() {
       ...previousFilters,
       studentFilter: [lowValue, highValue],
     }));
-
     fetchSchoolsAndScores({
-      cityFilter: null,
+      ...defaultFetchArgs,
+      cityFilter: filters.cities,
       studentFilter: [lowValue, highValue],
-      offset,
-      setSchoolsCache,
-      setCurrentSchools,
-      setSelectedSchool,
-      schoolsCache,
-      selectedSchool,
-      limit,
     });
   };
 
@@ -194,23 +171,23 @@ export default function SchoolsDashboard() {
       <PageHeader selectSchool={handleSelectedSchool} />
       <Stack direction="row" sx={{ marginTop: '15px', marginBottom: '15px' }}>
         <MultipleSelect
-          buttonValue="cities"
-          filterValue={CITIES}
+          selectionLabel="cities"
+          filterValues={CITIES}
           clearFilter={shouldClearFilter}
           filters={filters}
           updateSelectedFilters={setFilters}
-          updateView={() => {
+          updateTab={() => {
             setSelectedView(VIEW_OPTIONS.filteredSchools.filterName);
           }}
           fetchFilteredResults={handleCityFilterChange}
         />
         <MultipleSelect
-          buttonValue="students"
-          filterValue={TOTAL_STUDENTS}
+          selectionLabel="students"
+          filterValues={TOTAL_STUDENTS}
           clearFilter={shouldClearFilter}
           filters={filters}
           updateSelectedFilters={setFilters}
-          updateView={() =>
+          updateTab={() =>
             setSelectedView(VIEW_OPTIONS.filteredSchools.filterName)
           }
           fetchFilteredResults={handleStudentFilterChange}

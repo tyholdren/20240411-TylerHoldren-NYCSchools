@@ -28,6 +28,11 @@ export const CITIES = [
   'Staten Island',
 ];
 
+export const DEFAULT_FILTERS = {
+  cities: null,
+  studentFilter: null,
+};
+
 export const TOTAL_STUDENTS = [
   '1-100',
   '100-200',
@@ -35,12 +40,6 @@ export const TOTAL_STUDENTS = [
   '300-400',
   '400-500',
   '500+',
-];
-
-export const VIEW_OPTIONS_2 = [
-  'All schools',
-  'Filtered schools',
-  'My saved schools',
 ];
 
 export const VIEW_OPTIONS = {
@@ -56,6 +55,8 @@ export const VIEW_OPTIONS = {
       "You haven't saved any schools yet. Please save schools to enable view.",
   },
 };
+
+export const DEFAULT_VIEW = VIEW_OPTIONS.allSchools.filterName;
 
 export const ERROR_MESSAGES = {
   filteredError: 'Please select a filter first',
