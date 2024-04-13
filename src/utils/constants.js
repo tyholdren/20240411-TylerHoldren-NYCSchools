@@ -29,7 +29,7 @@ export const CITIES = [
 ];
 
 export const DEFAULT_FILTERS = {
-  cities: null,
+  cityFilter: null,
   studentFilter: null,
 };
 

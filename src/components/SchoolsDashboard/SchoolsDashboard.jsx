@@ -42,7 +42,7 @@ export default function SchoolsDashboard() {
   const [limit, setLimit] = useState(8);
 
   const defaultFetchArgs = {
-    cityFilter: filters.cities,
+    cityFilter: filters.cityFilter,
     studentFilter: filters.studentFilter,
     setSchoolsCache,
     setCurrentSchools,
@@ -65,8 +65,6 @@ export default function SchoolsDashboard() {
   useEffect(() => {
     fetchSchoolsAndScores({
       ...defaultFetchArgs,
-      cityFilter: filters.cities,
-      studentFilter: filters.studentFilter,
     });
   }, [offset, selectedSchool]);
 
@@ -116,7 +114,7 @@ export default function SchoolsDashboard() {
   };
 
   const handleViewSelection = (index, filters) => {
-    if (index !== 0 && filters.cities === null) {
+    if (index !== 0 && filters.cityFilter === null) {
       setShowTooltip(true);
       setTimeout(() => setShowTooltip(false), 3000);
       return;
@@ -133,14 +131,16 @@ export default function SchoolsDashboard() {
     setOffset(Math.max(0, offset - limit));
   };
 
-  useEffect(() => {}, [filters]);
-
   const handleNextClick = () => {
     setOffset(offset + limit);
   };
 
-  const handleCityFilterChange = cityFilter => {
-    fetchSchoolsAndScores({ ...defaultFetchArgs, cityFilter: cityFilter });
+  const handleCityFilterChange = newCity => {
+    setFilters(previousFilters => ({
+      ...previousFilters,
+      cityFilter: newCity,
+    }));
+    fetchSchoolsAndScores({ ...defaultFetchArgs, cityFilter: newCity });
   };
 
   const handleStudentFilterChange = selectedRange => {
@@ -161,7 +161,6 @@ export default function SchoolsDashboard() {
     }));
     fetchSchoolsAndScores({
       ...defaultFetchArgs,
-      cityFilter: filters.cities,
       studentFilter: [lowValue, highValue],
     });
   };
@@ -222,7 +221,7 @@ export default function SchoolsDashboard() {
                 them gracefully, at the moment error states are not persisting throughout app lifecycle, 
                 with more time we would make this behavior consistent throughout entire session
                 */
-                open={showTooltip && index !== 0 && filters.cities === null}
+                open={showTooltip && index !== 0 && filters.cityFilter === null}
                 disableFocusListener
                 disableHoverListener
                 disableTouchListener
