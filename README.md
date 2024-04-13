@@ -1,3 +1,12 @@
+
+
+
+
+https://github.com/tyholdren/20240411-TylerHoldren-NYCSchools/assets/77170645/c29a60ae-069d-401b-b23c-73c29937db1e
+
+
+
+
 The app will be available at `http://localhost:3000`.
 
 ## Project Requirements:
