@@ -41,7 +41,7 @@ export default function SchoolsDashboard() {
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(8);
 
-  const [savedSchools, setSavedSchools] = useState([1]);
+  const [savedSchools, setSavedSchools] = useState([]);
 
   const defaultFetchArgs = {
     cityFilter: filters.cityFilter,
@@ -115,8 +115,12 @@ export default function SchoolsDashboard() {
     }
   };
 
+  const handleSavedSchool = index => {
+    const newArray = [...savedSchools, currentSchools[index]];
+    setSavedSchools(newArray);
+  };
+
   const handleViewSelection = (index, filters) => {
-    console.log({ index, filters });
     if (
       (index === 1 && filters.cityFilter === null) ||
       (index === 2 && savedSchools.length === 0)
@@ -170,6 +174,8 @@ export default function SchoolsDashboard() {
       studentFilter: [lowValue, highValue],
     });
   };
+
+  console.log({ savedSchools });
 
   return (
     <div className="schools-dashboard">
@@ -262,11 +268,16 @@ export default function SchoolsDashboard() {
             <Stack direction="column">
               {savedSchools.length &&
               selectedView === VIEW_OPTIONS.mySavedSchools.filterName ? (
-                <div>test</div>
+                <ScrollableList
+                  schools={savedSchools}
+                  handleSelectedSchool={handleSelectedSchool}
+                  handleSavedSchool={handleSavedSchool}
+                ></ScrollableList>
               ) : (
                 <ScrollableList
                   schools={currentSchools}
                   handleSelectedSchool={handleSelectedSchool}
+                  handleSavedSchool={handleSavedSchool}
                 ></ScrollableList>
               )}
               <div>

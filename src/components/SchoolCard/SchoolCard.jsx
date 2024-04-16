@@ -11,6 +11,7 @@ export default function SchoolCard({
   finalgrades,
   total_students,
   handleClick,
+  handleSave,
 }) {
   const grades = finalgrades.length > 10 ? 'credit-based' : finalgrades;
 
@@ -55,6 +56,14 @@ export default function SchoolCard({
           onClick={handleClick}
         >
           See Details
+        </Button>
+        <Button
+          size="small"
+          variant="text"
+          sx={{ marginLeft: 0, marginTop: 1 }}
+          onClick={handleSave}
+        >
+          Save School
         </Button>
       </Box>
     </Card>

@@ -60,7 +60,7 @@ export const DEFAULT_VIEW = VIEW_OPTIONS.allSchools.filterName;
 
 export const ERROR_MESSAGES = {
   filteredError: 'Please select a filter first',
-  savedSchoolsError: 'Saved searches ability is coming soon!',
+  savedSchoolsError: 'Please save a school',
 };
 
 export const URLS = {

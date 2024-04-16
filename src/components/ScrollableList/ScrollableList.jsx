@@ -2,7 +2,11 @@ import React from 'react';
 import List from '@mui/material/List';
 import SchoolCard from '../SchoolCard/SchoolCard';
 
-export default function ScrollableList({ schools, handleSelectedSchool }) {
+export default function ScrollableList({
+  schools,
+  handleSelectedSchool,
+  handleSavedSchool,
+}) {
   return (
     <List
       sx={{
@@ -22,6 +26,7 @@ export default function ScrollableList({ schools, handleSelectedSchool }) {
           key={school.dbn}
           {...school}
           handleClick={() => handleSelectedSchool(index, false)}
+          handleSave={() => handleSavedSchool(index)}
         />
       ))}
     </List>
