@@ -41,6 +41,8 @@ export default function SchoolsDashboard() {
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(8);
 
+  const [savedSchools, setSavedSchools] = useState([1]);
+
   const defaultFetchArgs = {
     cityFilter: filters.cityFilter,
     studentFilter: filters.studentFilter,
@@ -114,7 +116,11 @@ export default function SchoolsDashboard() {
   };
 
   const handleViewSelection = (index, filters) => {
-    if (index !== 0 && filters.cityFilter === null) {
+    console.log({ index, filters });
+    if (
+      (index === 1 && filters.cityFilter === null) ||
+      (index === 2 && savedSchools.length === 0)
+    ) {
       setShowTooltip(true);
       setTimeout(() => setShowTooltip(false), 3000);
       return;
@@ -208,6 +214,13 @@ export default function SchoolsDashboard() {
       <div className="schools-dashboard__content-container">
         <Stack direction="row">
           {Object.values(VIEW_OPTIONS).map(({ filterName }, index) => {
+            let showErrorState = null;
+            if (index === 1) {
+              showErrorState = filters.cityFilter === null;
+            } else if (index === 2) {
+              showErrorState = savedSchools.length === 0;
+            }
+
             return (
               <TooltipWrapper
                 key={index}
@@ -221,7 +234,7 @@ export default function SchoolsDashboard() {
                 them gracefully, at the moment error states are not persisting throughout app lifecycle, 
                 with more time we would make this behavior consistent throughout entire session
                 */
-                open={showTooltip && index !== 0 && filters.cityFilter === null}
+                open={showTooltip && index !== 0 && showErrorState}
                 disableFocusListener
                 disableHoverListener
                 disableTouchListener
@@ -247,10 +260,15 @@ export default function SchoolsDashboard() {
         <div>
           <Stack direction="row">
             <Stack direction="column">
-              <ScrollableList
-                schools={currentSchools}
-                handleSelectedSchool={handleSelectedSchool}
-              ></ScrollableList>
+              {savedSchools.length &&
+              selectedView === VIEW_OPTIONS.mySavedSchools.filterName ? (
+                <div>test</div>
+              ) : (
+                <ScrollableList
+                  schools={currentSchools}
+                  handleSelectedSchool={handleSelectedSchool}
+                ></ScrollableList>
+              )}
               <div>
                 <span>{`Results ${offset} - ${offset + limit}`}</span>
                 <Stack direction="row" justifyContent="flex-end">
